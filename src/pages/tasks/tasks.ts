@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the TasksPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AngularFireList } from 'angularfire2/database';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -14,12 +9,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'tasks.html',
 })
 export class TasksPage {
+    tasks: AngularFireList<{}>;
+    newTask: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseProvider: FirebaseProvider) {
+        this.tasks = this.firebaseProvider.getTasks();
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TasksPage');
-  }
+    addItem() {
+        this.firebaseProvider.addTask(this.newTask);
+    }
+
+    removeItem(id) {
+        this.firebaseProvider.removeTask(this.newTask);
+    }
 
 }
