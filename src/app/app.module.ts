@@ -11,9 +11,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HttpModule } from '@angular/http';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule} from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
-import { FirebaseProvider } from '../providers/firebase/firebase';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCv0vHOydYpvBiIRcxV8pqeOkD5VP6vfgo",
@@ -34,8 +33,8 @@ const firebaseConfig = {
   imports: [
     BrowserModule,
     HttpModule,
-    AngularFireDatabaseModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -48,7 +47,6 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    FirebaseProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

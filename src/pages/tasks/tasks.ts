@@ -1,27 +1,26 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AngularFireList } from 'angularfire2/database';
-import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+
+interface Task {
+    text: string;
+    id?: string;
+}
 
 @IonicPage()
 @Component({
   selector: 'page-tasks',
   templateUrl: 'tasks.html',
 })
+
 export class TasksPage {
-    tasks: AngularFireList<{}>;
-    newTask: string;
+    tasksCollection: AngularFirestoreCollection<Task>;
+    tasks: Observable<Task[]>;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseProvider: FirebaseProvider) {
-        this.tasks = this.firebaseProvider.getTasks();
-    }
-
-    addItem() {
-        this.firebaseProvider.addTask(this.newTask);
-    }
-
-    removeItem(id) {
-        this.firebaseProvider.removeTask(this.newTask);
+    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+        this.tasksCollection = afs.collection('tasks');
+        this.tasks = this.tasksCollection.valueChanges();
     }
 
 }
