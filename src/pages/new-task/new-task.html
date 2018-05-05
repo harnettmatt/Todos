@@ -7,12 +7,39 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>newTask</ion-title>
+    <ion-title>New Task</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+    <form (ngSubmit)="submitForm()">
+        <ion-item>
+            <ion-label>Task Name</ion-label>
+            <ion-input type="text" [(ngModel)]="newTask.name" name="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Description</ion-label>
+            <ion-input type="text" [(ngModel)]="newTask.description" name="description"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Due Date</ion-label>
+            <ion-input type="text" [(ngModel)]="newTask.due" name="due"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Duration</ion-label>
+            <ion-input type="number" [(ngModel)]="newTask.duration" name="duration"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Duration Units</ion-label>
+            <ion-input type="text" [(ngModel)]="newTask.durationUnits" name="durationUnits"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Priority</ion-label>
+            <ion-input type="text" [(ngModel)]="newTask.priority" name="priority"></ion-input>
+        </ion-item>
+        <button ion-button type="submit" block>Add Task</button>
+    </form>
 
 </ion-content>
