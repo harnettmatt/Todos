@@ -16,8 +16,10 @@
 <ion-content padding>
     <ion-list>
         <button ion-item *ngFor='let task of tasks | async'>
-            {{ task | json }}
+            {{ task.name }}
+        </button>
+        <button ion-item (click)="addTask()">
+            add task
         </button>
     </ion-list>
-
 </ion-content>

@@ -4,8 +4,12 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Observable } from 'rxjs/Observable';
 
 interface Task {
-    text: string;
-    id?: string;
+    name: string;
+    description: string;
+    due: string;
+    duration: number;
+    durationUnit: string;
+    priority: number;
 }
 
 @IonicPage()
@@ -21,6 +25,10 @@ export class TasksPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
         this.tasksCollection = afs.collection('tasks');
         this.tasks = this.tasksCollection.valueChanges();
+    }
+
+    addTask() {
+        console.log('adding task');
     }
 
 }
