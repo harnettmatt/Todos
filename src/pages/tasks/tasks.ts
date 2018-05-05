@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { NewTaskPage } from '../new-task/new-task';
 
 interface Task {
     name: string;
@@ -28,7 +29,7 @@ export class TasksPage {
     }
 
     addTask() {
-        console.log('adding task');
+        this.navCtrl.push(NewTaskPage);
     }
 
 }
