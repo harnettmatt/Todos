@@ -16,30 +16,30 @@
 <ion-content padding>
     <form (ngSubmit)="submitForm()">
         <ion-item>
-            <ion-label>Task Name</ion-label>
+            <ion-label>Task Name: </ion-label>
             <ion-input type="text" [(ngModel)]="newTask.name" name="name"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Description</ion-label>
+            <ion-label>Description: </ion-label>
             <ion-input type="text" [(ngModel)]="newTask.description" name="description"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Due Date</ion-label>
+            <ion-label>Due Date: </ion-label>
             <ion-input type="text" [(ngModel)]="newTask.due" name="due"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Duration</ion-label>
+            <ion-label>Duration: </ion-label>
             <ion-input type="number" [(ngModel)]="newTask.duration" name="duration"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Duration Units</ion-label>
+            <ion-label>Duration Units: </ion-label>
             <ion-input type="text" [(ngModel)]="newTask.durationUnits" name="durationUnits"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Priority</ion-label>
+            <ion-label>Priority: </ion-label>
             <ion-input type="number" [(ngModel)]="newTask.priority" name="priority"></ion-input>
         </ion-item>
-        <button ion-button type="submit" block>Add Task</button>
+        <button ion-button type="submit" block color="secondary">Create</button>
     </form>
 
 </ion-content>
