@@ -16,7 +16,14 @@
 <ion-content padding>
     <ion-list>
         <button ion-item *ngFor='let task of tasks | async'>
-            {{ task.name }}
+            <ion-row class="top-row">
+                <ion-col> {{ task.name }} </ion-col>
+                <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnits }}  </ion-col>
+            </ion-row>
+            <ion-row class="bottom-row">
+                <ion-col> project </ion-col>
+                <ion-col class="right-col"> {{ task.due }} </ion-col>
+            </ion-row>
         </button>
         <button ion-item (click)="addTask()">
             add task
