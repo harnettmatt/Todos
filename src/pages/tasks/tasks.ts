@@ -3,8 +3,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { NewTaskPage } from '../new-task/new-task';
+import { EditTaskPage } from '../edit-task/edit-task';
 
 interface Task {
+    id: string;
     completed: boolean;
     name: string;
     description: string;
@@ -37,6 +39,10 @@ export class TasksPage {
 
     addTask() {
         this.navCtrl.push(NewTaskPage);
+    }
+
+    editTask(task) {
+        this.navCtrl.push(EditTaskPage, { data: task });
     }
 
     completeTask(task) {
