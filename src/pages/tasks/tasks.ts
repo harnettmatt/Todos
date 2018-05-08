@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { NewTaskPage } from '../new-task/new-task';
 
 interface Task {
+    completed: boolean;
     name: string;
     description: string;
     due: string;

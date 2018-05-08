@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 interface Task {
+    completed?: boolean;
     name?: string;
     description?: string;
     due?: string;
@@ -27,6 +28,7 @@ export class NewTaskPage {
     }
 
     submitForm() {
+        this.newTask.completed = false;
         this.tasksCollection.add(this.newTask);
         this.navCtrl.pop();
     }
