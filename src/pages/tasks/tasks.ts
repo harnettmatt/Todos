@@ -40,7 +40,9 @@ export class TasksPage {
     }
 
     completeTask(task) {
-        // stub
+        task.completed = true;
+        let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
+        taskDoc.update(task);
     }
 
     deleteTask(task) {
