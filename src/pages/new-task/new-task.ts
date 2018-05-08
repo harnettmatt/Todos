@@ -37,7 +37,6 @@ export class NewTaskPage {
     }
 
     submitForm() {
-        console.log(this.newTaskForm.value);
         this.newTask = {
             completed: false,
             name: this.newTaskForm.value['name'],
@@ -46,7 +45,6 @@ export class NewTaskPage {
             durationUnit: this.newTaskForm.value['durationUnit'],
             priority: this.newTaskForm.value['priority']
         }
-        console.log(this.newTask);
         this.tasksCollection.add(this.newTask);
         this.navCtrl.pop();
     }

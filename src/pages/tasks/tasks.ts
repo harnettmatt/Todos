@@ -32,5 +32,4 @@ export class TasksPage {
     addTask() {
         this.navCtrl.push(NewTaskPage);
     }
-
 }
