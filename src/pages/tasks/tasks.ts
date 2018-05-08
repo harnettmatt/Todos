@@ -46,6 +46,7 @@ export class TasksPage {
     }
 
     deleteTask(task) {
-        // stub
+        let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
+        taskDoc.delete();
     }
 }
