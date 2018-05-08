@@ -15,7 +15,7 @@
                 </ion-row>
                 <ion-row class="bottom-row">
                     <ion-col> project </ion-col>
-                    <ion-col class="right-col"> {{ task.due }} </ion-col>
+                    <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
                 </ion-row>
             </button>
 
