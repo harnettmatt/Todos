@@ -1,5 +1,14 @@
 page-tasks {
 
+    .sliding-item-button {
+        padding-left: 0px;
+    }
+
+    .item-inner {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
     .bottom-row {
         color: gray;
         font-size: 12px;
@@ -7,6 +16,12 @@ page-tasks {
 
     .right-col {
         text-align: right
+    }
+
+    #add-task {
+        width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
     }
 
 }

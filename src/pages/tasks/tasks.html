@@ -4,11 +4,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <ion-list>
         <ion-item-sliding *ngFor='let task of tasks | async'>
 
-            <button ion-item>
+            <button ion-item class='sliding-item-button'>
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>
                     <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnits }}  </ion-col>
@@ -28,6 +28,6 @@
             </ion-item-options>
 
         </ion-item-sliding>
-        <button ion-button (click)="addTask()" block>Create Task</button>
+        <button ion-button center (click)="addTask()" block id="add-task">Create Task</button>
     </ion-list>
 </ion-content>
