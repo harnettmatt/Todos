@@ -32,4 +32,12 @@ export class TasksPage {
     addTask() {
         this.navCtrl.push(NewTaskPage);
     }
+
+    completeTask(task) {
+        // stub
+    }
+
+    deleteTask(task) {
+        // stub
+    }
 }

@@ -6,16 +6,28 @@
 
 <ion-content padding>
     <ion-list>
-        <button ion-item *ngFor='let task of tasks | async'>
-            <ion-row class="top-row">
-                <ion-col> {{ task.name }} </ion-col>
-                <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnits }}  </ion-col>
-            </ion-row>
-            <ion-row class="bottom-row">
-                <ion-col> project </ion-col>
-                <ion-col class="right-col"> {{ task.due }} </ion-col>
-            </ion-row>
-        </button>
+        <ion-item-sliding *ngFor='let task of tasks | async'>
+
+            <button ion-item>
+                <ion-row class="top-row">
+                    <ion-col> {{ task.name }} </ion-col>
+                    <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnits }}  </ion-col>
+                </ion-row>
+                <ion-row class="bottom-row">
+                    <ion-col> project </ion-col>
+                    <ion-col class="right-col"> {{ task.due }} </ion-col>
+                </ion-row>
+            </button>
+
+            <ion-item-options side="left">
+                <button ion-button color="secondary" (click)="complete(item)">Complete</button>
+            </ion-item-options>
+
+            <ion-item-options side="right">
+                <button ion-button color="danger" (click)="delete(item)">Delete</button>
+            </ion-item-options>
+
+        </ion-item-sliding>
         <button ion-button (click)="addTask()" block>Create Task</button>
     </ion-list>
 </ion-content>
