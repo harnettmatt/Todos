@@ -26,7 +26,13 @@ export class TasksPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
         this.tasksCollection = afs.collection('tasks');
-        this.tasks = this.tasksCollection.valueChanges();
+        this.tasks = this.tasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
     }
 
     addTask() {
