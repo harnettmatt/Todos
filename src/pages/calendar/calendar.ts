@@ -18,20 +18,30 @@ export class CalendarPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.buildCalendar();
-
     }
 
     buildCalendar() {
         this.calendar = [];
-        for (let x=0; x<=96; x++) {
+        for (let x=0; x<96; x++) {
             let border = '0px solid';
             let label = '';
             let total_mins = x*15;
             let mins = total_mins % 60;
             let hours = Math.floor(total_mins / 60);
             let time = (hours*100) + mins;
+            let abrv = 'am';
+
+            if (hours >= 12) {
+                abrv = 'pm';
+                hours = hours % 12;
+            }
+
+            if (hours == 0) {
+                hours = 12;
+            }
+
             if (mins == 0) {
-                label = String(hours) + ":" + String(mins) + "0";
+                label = String(hours) + ":" + String(mins) + "0" + abrv;
             }
             if (mins == 45) {
                 border = '1px solid';
@@ -41,7 +51,6 @@ export class CalendarPage {
                 'time': time,
                 'border': border
             }
-            console.log(increment);
             this.calendar.push(increment);
         }
     }
