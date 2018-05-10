@@ -15,9 +15,11 @@ interface CalendarIncrement {
 export class CalendarPage {
 
     calendar: CalendarIncrement[];
+    today: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.buildCalendar();
+        this.today = new Date();
     }
 
     buildCalendar() {
