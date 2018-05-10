@@ -1,18 +1,18 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title> {{ today | date: 'EEEE, MMM d'}}</ion-title>
-  </ion-navbar>
-
+    <ion-navbar>
+        <ion-title> {{ date | date: 'EEEE, MMM d'}}</ion-title>
+        <ion-buttons end>
+            <button (click)="previousDay()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+            <button (click)="nextDay()"><ion-icon name="arrow-dropright"></ion-icon></button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
 <ion-content>
-
     <ion-grid>
         <ion-row *ngFor='let increment of calendar' [style.border-bottom]="increment.border" class='row'>
             <ion-col  class="label"> {{ increment.label }}</ion-col>
             <ion-col col-10 class="event-space">  </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>

@@ -15,11 +15,16 @@ interface CalendarIncrement {
 export class CalendarPage {
 
     calendar: CalendarIncrement[];
-    today: any;
+    date: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
+        if (this.navParams.get('date')) {
+            this.date = this.navParams.get('date');
+        }
+        else {
+            this.date = new Date();
+        }
         this.buildCalendar();
-        this.today = new Date();
     }
 
     buildCalendar() {
@@ -55,5 +60,15 @@ export class CalendarPage {
             }
             this.calendar.push(increment);
         }
+    }
+
+    previousDay() {
+        this.date.setDate(this.date.getDate() - 1);
+        this.navCtrl.setRoot(CalendarPage, {date: this.date}, {animate: false});
+    }
+
+    nextDay() {
+        this.date.setDate(this.date.getDate() + 1);
+        this.navCtrl.setRoot(CalendarPage, {date: this.date}, {animate: false});
     }
 }
