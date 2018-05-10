@@ -1,5 +1,9 @@
 page-calendar {
 
+    .nav-buttons {
+        font-size: 25px;
+    }
+
     .row {
         min-height: 26px;
     }
@@ -11,7 +15,5 @@ page-calendar {
 
     .event-space {
         width: 80%;
-        // border-bottom: 1px solid;
     }
-
 }
