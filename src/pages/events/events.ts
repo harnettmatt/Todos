@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { NewEventPage } from '../new-event/new-event';
 
 interface Event {
     name: string;
@@ -31,10 +32,10 @@ export class EventsPage {
         });
     }
 
-    // addEvent() {
-    //     this.navCtrl.push(NewEventPage);
-    // }
-    //
+    addEvent() {
+        this.navCtrl.push(NewEventPage);
+    }
+
     // editTask(event) {
     //     this.navCtrl.push(EditEventPage, { data: event });
     // }

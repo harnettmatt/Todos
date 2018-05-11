@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="newEventForm" (ngSubmit)="submitForm()">
+        <ion-item>
+            <ion-label>Event Name: </ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Frequency: </ion-label>
+            <ion-input type="text" formControlName="frequency"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>From: </ion-label>
+            <ion-input type="text" formControlName="from"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>To: </ion-label>
+            <ion-input type="text" formControlName="to"></ion-input>
+        </ion-item>
+        <button ion-button type="submit" block color="secondary" id="submit-button">Create</button>
+    </form>
+</ion-content>

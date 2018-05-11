@@ -9,6 +9,7 @@ import { TasksPage } from '../pages/tasks/tasks';
 import { NewTaskPage } from '../pages/new-task/new-task';
 import { EditTaskPage } from '../pages/edit-task/edit-task';
 import { EventsPage } from '../pages/events/events';
+import { NewEventPage } from '../pages/new-event/new-event';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -34,7 +35,8 @@ const firebaseConfig = {
     TasksPage,
     NewTaskPage,
     EditTaskPage,
-    EventsPage
+    EventsPage,
+    NewEventPage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ const firebaseConfig = {
     TasksPage,
     NewTaskPage,
     EditTaskPage,
-    EventsPage
+    EventsPage,
+    NewEventPage
   ],
   providers: [
     StatusBar,
