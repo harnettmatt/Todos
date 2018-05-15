@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit Preference</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form [formGroup]="editPreferenceForm" (ngSubmit)="submitForm()">
+        <ion-item>
+            <ion-label>Preference Name: </ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>From: </ion-label>
+            <ion-input type="text" formControlName="from"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>To: </ion-label>
+            <ion-input type="text" formControlName="to"></ion-input>
+        </ion-item>
+        <button ion-button type="submit" block color="secondary" id="update-button">Update</button>
+    </form>
+
+</ion-content>

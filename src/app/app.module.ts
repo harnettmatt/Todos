@@ -9,6 +9,7 @@ import { TasksPage } from '../pages/tasks/tasks';
 import { NewTaskPage } from '../pages/new-task/new-task';
 import { EditTaskPage } from '../pages/edit-task/edit-task';
 import { PreferencesPage } from '../pages/preferences/preferences';
+import { EditPreferencePage } from '../pages/edit-preference/edit-preference';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -34,7 +35,8 @@ const firebaseConfig = {
     TasksPage,
     NewTaskPage,
     EditTaskPage,
-    PreferencesPage
+    PreferencesPage,
+    EditPreferencePage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ const firebaseConfig = {
     TasksPage,
     NewTaskPage,
     EditTaskPage,
-    PreferencesPage
+    PreferencesPage,
+    EditPreferencePage
   ],
   providers: [
     StatusBar,
