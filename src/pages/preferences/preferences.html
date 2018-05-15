@@ -7,6 +7,13 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+    <ion-list>
+            <button ion-item *ngFor='let preference of preferences | async' class='item-button' (click)="editPreference(preference)">
+                <ion-row class="top-row">
+                    <ion-col> {{ preference.name }} </ion-col>
+                    <ion-col class="right-col">  {{ preference.from }} - {{ preference.to }}  </ion-col>
+                </ion-row>
+            </button>
+    </ion-list>
 </ion-content>
