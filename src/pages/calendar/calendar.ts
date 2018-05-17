@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable'
 
 interface CalendarIncrement {
     label: string;
-    time: Number;
+    time: number;
     border: string;
     color: string;
 }
@@ -13,8 +13,19 @@ interface CalendarIncrement {
 interface Preference {
     id: string;
     name: string;
-    from: Number;
-    to:   Number;
+    from: number;
+    to:   number;
+}
+
+interface Task {
+    id: string;
+    completed: boolean;
+    name: string;
+    description: string;
+    due: string;
+    duration: number;
+    durationUnit: string;
+    priority: number;
 }
 
 @IonicPage()
@@ -29,6 +40,8 @@ export class CalendarPage {
     preferencesCollection: AngularFirestoreCollection<Preference>;
     preferencesSnapshot: Observable<Preference[]>;
     preferences = [];
+    tasksCollection: AngularFirestoreCollection<Task>;
+    tasksSnapshot: Observable<Task[]>;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
         if (this.navParams.get('date')) {
@@ -39,6 +52,7 @@ export class CalendarPage {
         }
         this.buildCalendar();
         this.buildPreferences();
+        this.buildTasks();
     }
 
 
@@ -110,10 +124,46 @@ export class CalendarPage {
                 this.preferences.push(preference);
             }
         });
+    }
 
+    buildTasks() {
+        this.tasksCollection = this.afs.collection('tasks');
+        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                let data = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                data.id = id
+                return { id, ...data };
+            });
+        });
+        this.tasksSnapshot.forEach(array => {
+            for (let task of array) {
+                let durationIncrements = task.duration/15
+                let incrementCounter = 0;
+                let startingIncrementIndex = 0;
+                let endingIncrementIndex = 0;
+                // finding a free set of increments for the task
+                for (let increment of this.calendar) {
+                    if (increment.color == 'white') {
+                        if (incrementCounter == 0) {
+                            startingIncrementIndex = this.calendar.indexOf(increment);
+                        }
+                        incrementCounter++;
+                    }
+                    else if (increment.color != 'white' && incrementCounter < durationIncrements) {
+                        incrementCounter = 0;
+                    }
+                    if (incrementCounter >= durationIncrements) {
+                        endingIncrementIndex = startingIncrementIndex + durationIncrements;
+                        break;
+                    }
+                }
+                for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                    this.calendar[i].color='blue';
+                }
+            }
 
-        // determine the increments needed for each preference
-        // change color and borders of increment of calendar to reflect the event
+        });
     }
 
     previousDay() {
