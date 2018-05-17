@@ -12,7 +12,7 @@
     <ion-grid>
         <ion-row *ngFor='let increment of calendar' [style.border-bottom]="increment.border" class='row'>
             <ion-col  class="label"> {{ increment.label }}</ion-col>
-            <ion-col col-10 class="event-space">  </ion-col>
+            <ion-col col-10 class="event-space" [style.background-color]="increment.color">  </ion-col>
         </ion-row>
     </ion-grid>
 </ion-content>
