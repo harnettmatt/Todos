@@ -3,23 +3,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Preference } from '../preferences/preferences';
+import { Task } from '../tasks/tasks';
 
 interface CalendarIncrement {
-    label: string;
-    time: number;
+    label:  string;
+    time:   number;
     border: string;
-    color: string;
-}
-
-interface Task {
-    id: string;
-    completed: boolean;
-    name: string;
-    description: string;
-    due: string;
-    duration: number;
-    durationUnit: string;
-    priority: number;
+    color:  string;
 }
 
 @IonicPage()
@@ -48,7 +38,6 @@ export class CalendarPage {
         this.buildPreferences();
         this.buildTasks();
     }
-
 
     buildCalendar() {
         this.calendar = [];
@@ -90,10 +79,10 @@ export class CalendarPage {
         this.preferencesCollection = this.afs.collection('preferences');
         this.preferencesSnapshot = this.preferencesCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
-                let data = a.payload.doc.data() as Preference;
+                let preference = a.payload.doc.data() as Preference;
                 const id = a.payload.doc.id;
-                data.id = id
-                return { id, ...data };
+                preference.id = id
+                return preference;
             });
         });
         this.preferencesSnapshot.forEach(array => {
@@ -124,10 +113,10 @@ export class CalendarPage {
         this.tasksCollection = this.afs.collection('tasks');
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
-                let data = a.payload.doc.data() as Task;
+                let task = a.payload.doc.data() as Task;
                 const id = a.payload.doc.id;
-                data.id = id
-                return { id, ...data };
+                task.id = id
+                return task;
             });
         });
         this.tasksSnapshot.forEach(array => {

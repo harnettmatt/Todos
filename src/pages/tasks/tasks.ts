@@ -5,15 +5,15 @@ import { Observable } from 'rxjs/Observable';
 import { NewTaskPage } from '../new-task/new-task';
 import { EditTaskPage } from '../edit-task/edit-task';
 
-interface Task {
-    id: string;
-    completed: boolean;
-    name: string;
-    description: string;
-    due: string;
-    duration: number;
+export interface Task {
+    id?:           string;
+    completed:    boolean;
+    name:         string;
+    description:  string;
+    due:          string;
+    duration:     number;
     durationUnit: string;
-    priority: number;
+    priority:     number;
 }
 
 @IonicPage()
@@ -30,9 +30,10 @@ export class TasksPage {
         this.tasksCollection = afs.collection('tasks');
         this.tasks = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
-                const data = a.payload.doc.data() as Task;
+                const task = a.payload.doc.data() as Task;
                 const id = a.payload.doc.id;
-                return { id, ...data };
+                task.id = id;
+                return task;
             });
         });
     }

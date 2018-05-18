@@ -2,17 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
-interface Task {
-    id: string;
-    completed: boolean;
-    name: string;
-    description?: string;
-    due?: string;
-    duration?: number;
-    durationUnit?: string;
-    priority?: number;
-}
+import { Task } from '../tasks/tasks';
 
 @IonicPage()
 @Component({
@@ -45,10 +35,11 @@ export class EditTaskPage {
             id: this.editTaskID,
             completed: false,
             name: this.editTaskForm.value['name'],
+            description: '',
             due: this.editTaskForm.value['due'],
-            duration: this.editTaskForm.value['duration'],
+            duration: Number(this.editTaskForm.value['duration']),
             durationUnit: this.editTaskForm.value['durationUnit'],
-            priority: this.editTaskForm.value['priority']
+            priority: Number(this.editTaskForm.value['priority'])
         }
         let taskDoc = this.afs.doc<Task>('tasks/' + this.editTaskID);
         taskDoc.update(this.editTask);

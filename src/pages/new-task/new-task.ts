@@ -2,16 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
-interface Task {
-    completed: boolean;
-    name: string;
-    description?: string;
-    due?: string;
-    duration?: number;
-    durationUnit?: string;
-    priority?: number;
-}
+import { Task } from '../tasks/tasks';
 
 @IonicPage()
 @Component({
@@ -40,6 +31,7 @@ export class NewTaskPage {
         this.newTask = {
             completed: false,
             name: this.newTaskForm.value['name'],
+            description: '',
             due: this.newTaskForm.value['due'],
             duration: this.newTaskForm.value['duration'],
             durationUnit: this.newTaskForm.value['durationUnit'],
