@@ -1,20 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable';
+import { Preference } from '../preferences/preferences';
 
 interface CalendarIncrement {
     label: string;
     time: number;
     border: string;
     color: string;
-}
-
-interface Preference {
-    id: string;
-    name: string;
-    from: number;
-    to:   number;
 }
 
 interface Task {

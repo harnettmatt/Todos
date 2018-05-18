@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
-interface Preference {
-    id: string;
-    name: string;
-    from: string;
-    to:   string;
-}
+import { Preference } from '../preferences/preferences';
 
 @IonicPage()
 @Component({
@@ -28,17 +22,17 @@ export class EditPreferencePage {
         this.editPreferenceForm = this.formBuilder.group({
             name: [this.editPreference.name],
             from: [this.editPreference.from],
-            to: [this.editPreference.to],
+            to:   [this.editPreference.to],
         });
         this.preferencesCollection = this.afs.collection('preferences');
     }
 
     submitForm() {
-        this.editPreference = {
-            id: this.editPreferenceID,
+        this.editPreference  = {
+            id:   this.editPreferenceID,
             name: this.editPreferenceForm.value['name'],
-            from: this.editPreferenceForm.value['from'],
-            to: this.editPreferenceForm.value['to'],
+            from: Number(this.editPreferenceForm.value['from']),
+            to:   Number(this.editPreferenceForm.value['to']),
         }
         let taskDoc = this.afs.doc<Preference>('preferences/' + this.editPreferenceID);
         taskDoc.update(this.editPreference);

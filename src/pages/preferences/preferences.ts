@@ -5,11 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { EditPreferencePage } from '../edit-preference/edit-preference';
 
 
-interface Preference {
-    id: string;
+export interface Preference {
+    id:   string;
     name: string;
-    from: string;
-    to:   string;
+    from: number;
+    to:   number;
 }
 
 @IonicPage()
@@ -26,9 +26,10 @@ export class PreferencesPage {
         this.preferencesCollection = this.afs.collection('preferences');
         this.preferences = this.preferencesCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
-                const data = a.payload.doc.data() as Preference;
+                const preference = a.payload.doc.data() as Preference;
                 const id = a.payload.doc.id;
-                return { id, ...data };
+                preference.id = id;
+                return preference;
             });
         });
     }
