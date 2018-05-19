@@ -11,6 +11,7 @@ export interface Task {
     name:         string;
     description:  string;
     due:          string;
+    scheduled?:    number;
     duration:     number;
     durationUnit: string;
     priority:     number;

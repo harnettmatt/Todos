@@ -119,33 +119,50 @@ export class CalendarPage {
                 return task;
             });
         });
-        this.tasksSnapshot.forEach(array => {
-            for (let task of array) {
-                let durationIncrements = task.duration/15
-                let incrementCounter = 0;
-                let startingIncrementIndex = 0;
-                let endingIncrementIndex = 0;
-                // finding a free set of increments for the task
-                for (let increment of this.calendar) {
-                    if (increment.color == 'white') {
-                        if (incrementCounter == 0) {
-                            startingIncrementIndex = this.calendar.indexOf(increment);
+        let updateTasks = [];
+        let promise = new Promise((resolve, reject) => {
+            this.tasksSnapshot.subscribe(tasks => {
+                tasks.forEach(task => {
+                    let durationIncrements = task.duration/15
+                    let incrementCounter = 0;
+                    let startingIncrementIndex = 0;
+                    let endingIncrementIndex = 0;
+                    // finding a free set of increments for the task
+                    for (let increment of this.calendar) {
+                        if (increment.color == 'white') {
+                            if (incrementCounter == 0) {
+                                startingIncrementIndex = this.calendar.indexOf(increment);
+                            }
+                            incrementCounter++;
                         }
-                        incrementCounter++;
+                        else if (increment.color != 'white' && incrementCounter < durationIncrements) {
+                            incrementCounter = 0;
+                        }
+                        if (incrementCounter >= durationIncrements) {
+                            endingIncrementIndex = startingIncrementIndex + durationIncrements;
+                            break;
+                        }
                     }
-                    else if (increment.color != 'white' && incrementCounter < durationIncrements) {
-                        incrementCounter = 0;
+                    // this is assuming that every task can be scheduled on this day. This needs to be changed
+                    for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                        this.calendar[i].color='blue';
                     }
-                    if (incrementCounter >= durationIncrements) {
-                        endingIncrementIndex = startingIncrementIndex + durationIncrements;
-                        break;
-                    }
-                }
-                for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
-                    this.calendar[i].color='blue';
-                }
-            }
+                    let total_mins = startingIncrementIndex * 15;
+                    let mins = total_mins % 60;
+                    let hours = Math.floor(total_mins / 60);
+                    task.scheduled = (hours*100) + mins;
+                    updateTasks.push(task);
+                });
+                resolve();
+            });
+        });
 
+        promise.then(() => {
+            for (let task of updateTasks){
+                console.log(task);
+                let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
+                taskDoc.update(task);
+            }
         });
     }
 
