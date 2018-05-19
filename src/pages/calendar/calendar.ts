@@ -23,7 +23,6 @@ export class CalendarPage {
     date: any;
     preferencesCollection: AngularFirestoreCollection<Preference>;
     preferencesSnapshot: Observable<Preference[]>;
-    preferences = [];
     tasksCollection: AngularFirestoreCollection<Task>;
     tasksSnapshot: Observable<Task[]>;
 
@@ -85,9 +84,9 @@ export class CalendarPage {
                 return preference;
             });
         });
-        this.preferencesSnapshot.forEach(array => {
-            for (let preference of array) {
-                if (preference.name == 'sleep'){
+        this.preferencesSnapshot.subscribe(preferences => {
+             preferences.forEach(preference => {
+                if (preference.name == 'sleep') {
                     for (let increment of this.calendar) {
                         if (preference.to > increment.time && increment.time >= 0) {
                             increment.color = 'gray';
@@ -104,8 +103,7 @@ export class CalendarPage {
                         }
                     }
                 }
-                this.preferences.push(preference);
-            }
+            });
         });
     }
 
