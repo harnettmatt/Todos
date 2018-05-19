@@ -132,10 +132,8 @@ export class CalendarPage {
                     for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
                         this.calendar[i].color='blue';
                     }
-                    let total_mins = startingIncrementIndex * 15;
-                    let mins = total_mins % 60;
-                    let hours = Math.floor(total_mins / 60);
-                    task.scheduled = (hours*100) + mins;
+                    let totalMins = startingIncrementIndex * 15;
+                    task.scheduled = this.minsToMilitary(totalMins);
                     updateTasks.push(task);
                 });
                 resolve();
