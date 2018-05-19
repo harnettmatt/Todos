@@ -43,14 +43,12 @@ export class CalendarPage {
         for (let x=0; x<96; x++) {
             let border = '0px solid';
             let label = '';
-            let total_mins = x*15;
-            let mins = total_mins % 60;
-            let hours = Math.floor(total_mins / 60);
-            let time = (hours*100) + mins;
-            if (mins == 0) {
-                label = this.minsToString(total_mins);
+            let totalMins = x*15;
+            let time = this.minsToMilitary(totalMins);
+            if (totalMins % 60 == 0) {
+                label = this.minsToString(totalMins);
             }
-            if (mins == 45) {
+            if (totalMins % 60 == 45) {
                 border = '1px solid';
             }
             let increment = {
@@ -171,6 +169,12 @@ export class CalendarPage {
         else {
             return String(hours) + ":" + String(mins) + abrv;
         }
+    }
+
+    minsToMilitary(totalMins: number): number {
+        let mins = totalMins % 60;
+        let hours = Math.floor(totalMins / 60);
+        return (hours*100) + mins;
     }
 
     previousDay() {
