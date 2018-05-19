@@ -47,19 +47,8 @@ export class CalendarPage {
             let mins = total_mins % 60;
             let hours = Math.floor(total_mins / 60);
             let time = (hours*100) + mins;
-            let abrv = 'am';
-
-            if (hours >= 12) {
-                abrv = 'pm';
-                hours = hours % 12;
-            }
-
-            if (hours == 0) {
-                hours = 12;
-            }
-
             if (mins == 0) {
-                label = String(hours) + ":" + String(mins) + "0" + abrv;
+                label = this.minsToString(total_mins);
             }
             if (mins == 45) {
                 border = '1px solid';
@@ -162,6 +151,26 @@ export class CalendarPage {
                 taskDoc.update(task);
             }
         });
+    }
+
+    minsToString(totalMins: number): string {
+        let mins = totalMins % 60;
+        let hours = Math.floor(totalMins / 60);
+        let abrv = 'am';
+        if (hours >= 12) {
+            abrv = 'pm';
+            hours = hours % 12;
+        }
+        if (hours == 0) {
+            hours = 12;
+        }
+
+        if (mins == 0) {
+            return String(hours) + ":" + String(mins) + "0" + abrv;
+        }
+        else {
+            return String(hours) + ":" + String(mins) + abrv;
+        }
     }
 
     previousDay() {
