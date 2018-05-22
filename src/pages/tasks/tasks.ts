@@ -6,15 +6,16 @@ import { NewTaskPage } from '../new-task/new-task';
 import { EditTaskPage } from '../edit-task/edit-task';
 
 export interface Task {
-    id?:           string;
-    completed:    boolean;
-    name:         string;
-    description:  string;
-    due:          string;
-    scheduled?:    number;
-    duration:     number;
-    durationUnit: string;
-    priority:     number;
+    id?:            string;
+    completed:      boolean;
+    name:           string;
+    description:    string;
+    due:            string;
+    scheduledDate?: number;
+    scheduledTime?: number;
+    duration:       number;
+    durationUnit:   string;
+    priority:       number;
 }
 
 @IonicPage()

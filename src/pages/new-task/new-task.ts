@@ -33,7 +33,7 @@ export class NewTaskPage {
             name: this.newTaskForm.value['name'],
             description: '',
             due: this.newTaskForm.value['due'],
-            duration: this.newTaskForm.value['duration'],
+            duration: Number(this.newTaskForm.value['duration']),
             durationUnit: this.newTaskForm.value['durationUnit'],
             priority: this.newTaskForm.value['priority']
         }

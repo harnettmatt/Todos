@@ -33,9 +33,17 @@ export class CalendarPage {
         else {
             this.date = new Date();
         }
+
+        let time = 1230;
+        let hours = Number(time.toString().slice(0,2));
+        let mins = Number(time.toString().slice(2,4));
+        let totalMins = (hours * 60) + mins;
+        let incrementIndex = totalMins/15;
+
         this.buildCalendar();
         this.buildPreferences();
         this.buildTasks();
+        this.scheduleTasks();
     }
 
     buildCalendar() {
@@ -78,7 +86,7 @@ export class CalendarPage {
                         if (preference.to > increment.time && increment.time >= 0) {
                             increment.color = 'gray';
                         }
-                        if (2400 >= increment.time && increment.time >= preference.from){
+                        if (2400 >= increment.time && increment.time >= preference.from) {
                             increment.color = 'gray';
                         }
                     }
@@ -95,6 +103,32 @@ export class CalendarPage {
     }
 
     buildTasks() {
+        let today = new Date();
+        let todayNumber = (((today.getFullYear() * 100) + today.getMonth() + 1) * 100) + today.getDate();
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', todayNumber));
+        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                let task = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                task.id = id
+                return task;
+            });
+        });
+        this.tasksSnapshot.subscribe(tasks => {
+            console.log(tasks);
+            tasks.forEach(task => {
+                let totalMins = this.militarytoMins(task.scheduledTime);
+                let startingIncrementIndex = totalMins/15;
+                let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
+                for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                    console.log(i);
+                    this.calendar[i].color='blue';
+                }
+            });
+        });
+    }
+
+    scheduleTasks() {
         this.tasksCollection = this.afs.collection('tasks');
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
@@ -133,7 +167,9 @@ export class CalendarPage {
                         this.calendar[i].color='blue';
                     }
                     let totalMins = startingIncrementIndex * 15;
-                    task.scheduled = this.minsToMilitary(totalMins);
+                    task.scheduledTime = this.minsToMilitary(totalMins);
+                    let today = new Date();
+                    task.scheduledDate = (((today.getFullYear() * 100) + today.getMonth() + 1) * 100) + today.getDate();
                     updateTasks.push(task);
                 });
                 resolve();
@@ -172,7 +208,17 @@ export class CalendarPage {
     minsToMilitary(totalMins: number): number {
         let mins = totalMins % 60;
         let hours = Math.floor(totalMins / 60);
-        return (hours*100) + mins;
+        return (hours * 100) + mins;
+    }
+
+    militarytoMins(time: number): number {
+        let timeString = time.toString();
+        while (timeString.length < 4) {
+            timeString = '0' + timeString;
+        }
+        let hours = Number(timeString.slice(0,2));
+        let mins = Number(timeString.slice(2,4));
+        return (hours * 60) + mins;
     }
 
     previousDay() {
