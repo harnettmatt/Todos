@@ -6,11 +6,12 @@ import { Preference } from '../preferences/preferences';
 import { Task } from '../tasks/tasks';
 
 interface CalendarIncrement {
-    timeLabel:  string;
-    eventLabel: string;
-    time:       number;
-    border:     string;
-    color:      string;
+    timeLabel:      string;
+    eventLabel:     string;
+    time:           number;
+    timeBorder:     string;
+    eventBorder:    string;
+    color:          string;
 }
 
 @IonicPage()
@@ -50,7 +51,7 @@ export class CalendarPage {
     buildCalendar() {
         this.calendar = [];
         for (let x=0; x<96; x++) {
-            let border = '0px solid';
+            let timeBorder = '';
             let label = '';
             let totalMins = x*15;
             let time = this.minsToMilitary(totalMins);
@@ -58,13 +59,14 @@ export class CalendarPage {
                 label = this.minsToString(totalMins);
             }
             if (totalMins % 60 == 45) {
-                border = '1px solid';
+                timeBorder = '1px solid';
             }
             let increment = {
                 'timeLabel': label,
                 'eventLabel': '',
                 'time': time,
-                'border': border,
+                'timeBorder': timeBorder,
+                'eventBorder': '',
                 'color': 'white'
             }
             this.calendar.push(increment);
@@ -124,6 +126,10 @@ export class CalendarPage {
                     if (i == startingIncrementIndex) {
                         this.calendar[i].eventLabel = task.name;
                     }
+                    console.log(this.calendar[i]);
+                    if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
+                        this.calendar[i].eventBorder = '1px solid';
+                    }
                     this.calendar[i].color='blue';
                 }
             });
@@ -168,6 +174,9 @@ export class CalendarPage {
                     for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
                         if (i == startingIncrementIndex) {
                             this.calendar[i].eventLabel = task.name;
+                        }
+                        if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
+                            this.calendar[i].eventBorder = '1px solid';
                         }
                         this.calendar[i].color='blue';
                     }
