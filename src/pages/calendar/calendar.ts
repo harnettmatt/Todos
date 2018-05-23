@@ -9,7 +9,6 @@ interface CalendarIncrement {
     timeLabel:      string;
     eventLabel:     string;
     time:           number;
-    timeBorder:     string;
     eventBorder:    string;
     color:          string;
 }
@@ -51,22 +50,21 @@ export class CalendarPage {
     buildCalendar() {
         this.calendar = [];
         for (let x=0; x<96; x++) {
-            let timeBorder = '';
+            let eventBorder = '0px solid';
             let label = '';
             let totalMins = x*15;
             let time = this.minsToMilitary(totalMins);
-            if (totalMins % 60 == 0) {
+            if (totalMins % 60 == 0 && time != 0) {
                 label = this.minsToString(totalMins);
             }
             if (totalMins % 60 == 45) {
-                timeBorder = '1px solid';
+                eventBorder = '1px dashed';
             }
             let increment = {
                 'timeLabel': label,
                 'eventLabel': '',
                 'time': time,
-                'timeBorder': timeBorder,
-                'eventBorder': '',
+                'eventBorder': eventBorder,
                 'color': 'white'
             }
             this.calendar.push(increment);
@@ -203,8 +201,8 @@ export class CalendarPage {
             if (i == startingIncrementIndex) {
                 this.calendar[i].eventLabel = task.name;
             }
-            if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
-                this.calendar[i].eventBorder = '1px solid';
+            if (i + 1 == endingIncrementIndex) {
+                this.calendar[i].eventBorder = '1px solid white';
             }
             this.calendar[i].color='blue';
         }
