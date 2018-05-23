@@ -103,8 +103,7 @@ export class CalendarPage {
     }
 
     buildTasks() {
-        let today = new Date();
-        let todayNumber = (((today.getFullYear() * 100) + today.getMonth() + 1) * 100) + today.getDate();
+        let todayNumber = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', todayNumber));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
@@ -115,13 +114,11 @@ export class CalendarPage {
             });
         });
         this.tasksSnapshot.subscribe(tasks => {
-            console.log(tasks);
             tasks.forEach(task => {
                 let totalMins = this.militarytoMins(task.scheduledTime);
                 let startingIncrementIndex = totalMins/15;
                 let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
                 for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
-                    console.log(i);
                     this.calendar[i].color='blue';
                 }
             });
@@ -129,7 +126,7 @@ export class CalendarPage {
     }
 
     scheduleTasks() {
-        this.tasksCollection = this.afs.collection('tasks');
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', ''));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let task = a.payload.doc.data() as Task;
@@ -178,7 +175,6 @@ export class CalendarPage {
 
         promise.then(() => {
             for (let task of updateTasks){
-                console.log(task);
                 let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
                 taskDoc.update(task);
             }
