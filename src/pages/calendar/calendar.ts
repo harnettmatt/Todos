@@ -6,10 +6,11 @@ import { Preference } from '../preferences/preferences';
 import { Task } from '../tasks/tasks';
 
 interface CalendarIncrement {
-    label:  string;
-    time:   number;
-    border: string;
-    color:  string;
+    timeLabel:  string;
+    eventLabel: string;
+    time:       number;
+    border:     string;
+    color:      string;
 }
 
 @IonicPage()
@@ -60,7 +61,8 @@ export class CalendarPage {
                 border = '1px solid';
             }
             let increment = {
-                'label': label,
+                'timeLabel': label,
+                'eventLabel': '',
                 'time': time,
                 'border': border,
                 'color': 'white'
@@ -119,6 +121,9 @@ export class CalendarPage {
                 let startingIncrementIndex = totalMins/15;
                 let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
                 for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                    if (i == startingIncrementIndex) {
+                        this.calendar[i].eventLabel = task.name;
+                    }
                     this.calendar[i].color='blue';
                 }
             });
@@ -161,6 +166,9 @@ export class CalendarPage {
                     }
                     // this is assuming that every task can be scheduled on this day. This needs to be changed
                     for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                        if (i == startingIncrementIndex) {
+                            this.calendar[i].eventLabel = task.name;
+                        }
                         this.calendar[i].color='blue';
                     }
                     let totalMins = startingIncrementIndex * 15;
