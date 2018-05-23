@@ -44,8 +44,8 @@ export class CalendarPage {
 
         this.buildCalendar();
         this.buildPreferences();
-        this.buildTasks();
         this.scheduleTasks();
+        this.buildTasks();
     }
 
     buildCalendar() {
@@ -119,19 +119,7 @@ export class CalendarPage {
         });
         this.tasksSnapshot.subscribe(tasks => {
             tasks.forEach(task => {
-                let totalMins = this.militarytoMins(task.scheduledTime);
-                let startingIncrementIndex = totalMins/15;
-                let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
-                for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
-                    if (i == startingIncrementIndex) {
-                        this.calendar[i].eventLabel = task.name;
-                    }
-                    console.log(this.calendar[i]);
-                    if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
-                        this.calendar[i].eventBorder = '1px solid';
-                    }
-                    this.calendar[i].color='blue';
-                }
+                this.addTaskToCalendar(task);
             });
         });
     }
@@ -170,20 +158,9 @@ export class CalendarPage {
                             break;
                         }
                     }
-                    // this is assuming that every task can be scheduled on this day. This needs to be changed
-                    for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
-                        if (i == startingIncrementIndex) {
-                            this.calendar[i].eventLabel = task.name;
-                        }
-                        if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
-                            this.calendar[i].eventBorder = '1px solid';
-                        }
-                        this.calendar[i].color='blue';
-                    }
                     let totalMins = startingIncrementIndex * 15;
                     task.scheduledTime = this.minsToMilitary(totalMins);
-                    let today = new Date();
-                    task.scheduledDate = (((today.getFullYear() * 100) + today.getMonth() + 1) * 100) + today.getDate();
+                    task.scheduledDate = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
                     updateTasks.push(task);
                 });
                 resolve();
@@ -218,6 +195,20 @@ export class CalendarPage {
         }
     }
 
+    addTaskToCalendar(task: Task) {
+        let totalMins = this.militarytoMins(task.scheduledTime);
+        let startingIncrementIndex = totalMins/15;
+        let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
+        for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+            if (i == startingIncrementIndex) {
+                this.calendar[i].eventLabel = task.name;
+            }
+            if (i + 1 == endingIncrementIndex && this.calendar[i].timeBorder == '') {
+                this.calendar[i].eventBorder = '1px solid';
+            }
+            this.calendar[i].color='blue';
+        }
+    }
     minsToMilitary(totalMins: number): number {
         let mins = totalMins % 60;
         let hours = Math.floor(totalMins / 60);
