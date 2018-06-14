@@ -31,17 +31,23 @@ export class EditTaskPage {
     }
 
     submitForm() {
+        let scheduledDate = this.editTask.scheduledDate;
+        let scheduledTime = this.editTask.scheduledTime;
+        if (Number(this.editTask.value['duration']) != this.editTask.duration) {
+            scheduledDate = '';
+            scheduledTime = '';
+        }
         this.editTask = {
-          id: this.editTaskID,
-          completed: this.editTask.completed,
-          description: this.editTaskForm.value['description'],
-          due: this.editTaskForm.value['due'],
-          duration: Number(this.editTaskForm.value['duration']),
-          durationUnit: this.editTaskForm.value['durationUnit'],
-          name: this.editTaskForm.value['name'],
-          priority: this.editTaskForm.value['priority'],
-          scheduledDate: this.editTask.scheduledDate,
-          scheduledTime: this.editTask.scheduledTime
+            id: this.editTaskID,
+            completed: this.editTask.completed,
+            description: this.editTaskForm.value['description'],
+            due: this.editTaskForm.value['due'],
+            duration: Number(this.editTaskForm.value['duration']),
+            durationUnit: this.editTaskForm.value['durationUnit'],
+            name: this.editTaskForm.value['name'],
+            priority: this.editTaskForm.value['priority'],
+            scheduledDate: scheduledDate,
+            scheduledTime: scheduledTime
         }
         let taskDoc = this.afs.doc<Task>('tasks/' + this.editTaskID);
         taskDoc.update(this.editTask);
