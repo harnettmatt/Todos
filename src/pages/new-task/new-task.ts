@@ -30,12 +30,14 @@ export class NewTaskPage {
     submitForm() {
         this.newTask = {
             completed: false,
-            name: this.newTaskForm.value['name'],
             description: '',
             due: this.newTaskForm.value['due'],
             duration: Number(this.newTaskForm.value['duration']),
             durationUnit: this.newTaskForm.value['durationUnit'],
-            priority: this.newTaskForm.value['priority']
+            name: this.newTaskForm.value['name'],
+            priority: this.newTaskForm.value['priority'],
+            scheduledDate: '',
+            scheduledTime: ''
         }
         this.tasksCollection.add(this.newTask);
         this.navCtrl.pop();
