@@ -36,8 +36,8 @@ export class NewTaskPage {
             durationUnit: this.newTaskForm.value['durationUnit'],
             name: this.newTaskForm.value['name'],
             priority: this.newTaskForm.value['priority'],
-            scheduledDate: '',
-            scheduledTime: ''
+            scheduledDate: -1,
+            scheduledTime: -1
         }
         this.tasksCollection.add(this.newTask);
         this.navCtrl.pop();

@@ -11,6 +11,7 @@ interface CalendarIncrement {
     time:           number;
     eventBorder:    string;
     color:          string;
+    task?:           Task;
 }
 
 @IonicPage()
@@ -123,7 +124,7 @@ export class CalendarPage {
     }
 
     scheduleTasks() {
-        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', ''));
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', -1));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let task = a.payload.doc.data() as Task;
@@ -158,6 +159,7 @@ export class CalendarPage {
                     }
                     let totalMins = startingIncrementIndex * 15;
                     task.scheduledTime = this.minsToMilitary(totalMins);
+                    this.addTaskToCalendar(task);
                     task.scheduledDate = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
                     updateTasks.push(task);
                 });

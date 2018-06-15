@@ -34,8 +34,8 @@ export class EditTaskPage {
         let scheduledDate = this.editTask.scheduledDate;
         let scheduledTime = this.editTask.scheduledTime;
         if (Number(this.editTaskForm.value['duration']) != this.editTask.duration) {
-            scheduledDate = '';
-            scheduledTime = '';
+            scheduledDate = -1;
+            scheduledTime = -1;
         }
         this.editTask = {
             id: this.editTaskID,
