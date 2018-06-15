@@ -25,8 +25,11 @@ export class CalendarPage {
     date: any;
     preferencesCollection: AngularFirestoreCollection<Preference>;
     preferencesSnapshot: Observable<Preference[]>;
+    preferencesSubscription: any;
     tasksCollection: AngularFirestoreCollection<Task>;
     tasksSnapshot: Observable<Task[]>;
+    tasksSubscription: any;
+    unscheduledTasksSubscription: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
         if (this.navParams.get('date')) {
@@ -82,27 +85,33 @@ export class CalendarPage {
                 return preference;
             });
         });
-        this.preferencesSnapshot.subscribe(preferences => {
-             preferences.forEach(preference => {
-                if (preference.name == 'sleep') {
-                    for (let increment of this.calendar) {
-                        if (preference.to > increment.time && increment.time >= 0) {
-                            increment.color = 'gray';
-                        }
-                        if (2400 >= increment.time && increment.time >= preference.from) {
-                            increment.color = 'gray';
-                        }
-                    }
-                }
-                else if (preference.name == 'work') {
-                    for (let increment of this.calendar) {
-                        if (preference.to > increment.time && increment.time >= preference.from) {
-                            increment.color = 'lightblue';
+        let promise = new Promise((resolve, reject) => {
+            this.preferencesSubscription = this.preferencesSnapshot.subscribe(preferences => {
+                 preferences.forEach(preference => {
+                    if (preference.name == 'sleep') {
+                        for (let increment of this.calendar) {
+                            if (preference.to > increment.time && increment.time >= 0) {
+                                increment.color = 'gray';
+                            }
+                            if (2400 >= increment.time && increment.time >= preference.from) {
+                                increment.color = 'gray';
+                            }
                         }
                     }
-                }
+                    else if (preference.name == 'work') {
+                        for (let increment of this.calendar) {
+                            if (preference.to > increment.time && increment.time >= preference.from) {
+                                increment.color = 'lightblue';
+                            }
+                        }
+                    }
+                });
+                resolve();
             });
         });
+        promise.then(() => {
+            this.preferencesSubscription.unsubscribe();
+        })
     }
 
     buildTasks() {
@@ -116,10 +125,17 @@ export class CalendarPage {
                 return task;
             });
         });
-        this.tasksSnapshot.subscribe(tasks => {
-            tasks.forEach(task => {
-                this.addTaskToCalendar(task);
+        let promise = new Promise((resolve, reject) => {
+            this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
+                tasks.forEach(task => {
+                    this.addTaskToCalendar(task);
+                });
+                resolve();
             });
+        });
+
+        promise.then(() => {
+            this.tasksSubscription.unsubscribe();
         });
     }
 
@@ -134,8 +150,9 @@ export class CalendarPage {
             });
         });
         let updateTasks = [];
+        let tasksSubscription = false;
         let promise = new Promise((resolve, reject) => {
-            this.tasksSnapshot.subscribe(tasks => {
+            this.unscheduledTasksSubscription = this.tasksSnapshot.subscribe(tasks => {
                 tasks.forEach(task => {
                     let durationIncrements = task.duration/15
                     let incrementCounter = 0;
@@ -165,9 +182,13 @@ export class CalendarPage {
                 });
                 resolve();
             });
+
         });
 
         promise.then(() => {
+            if (this.unscheduledTasksSubscription) {
+                this.unscheduledTasksSubscription.unsubscribe();
+            }
             for (let task of updateTasks){
                 let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
                 taskDoc.update(task);
