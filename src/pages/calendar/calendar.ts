@@ -11,7 +11,8 @@ interface CalendarIncrement {
     time:           number;
     eventBorder:    string;
     color:          string;
-    task?:           Task;
+    task?:          Task;
+    preference?:    Preference;
 }
 
 @IonicPage()
@@ -47,8 +48,8 @@ export class CalendarPage {
 
         this.buildCalendar();
         this.buildPreferences();
-        this.scheduleTasks();
         this.buildTasks();
+        this.scheduleTasks();
     }
 
     buildCalendar() {
@@ -92,9 +93,11 @@ export class CalendarPage {
                         for (let increment of this.calendar) {
                             if (preference.to > increment.time && increment.time >= 0) {
                                 increment.color = 'gray';
+                                increment.preference = preference;
                             }
                             if (2400 >= increment.time && increment.time >= preference.from) {
                                 increment.color = 'gray';
+                                increment.preference = preference;
                             }
                         }
                     }
@@ -102,6 +105,7 @@ export class CalendarPage {
                         for (let increment of this.calendar) {
                             if (preference.to > increment.time && increment.time >= preference.from) {
                                 increment.color = 'lightblue';
+                                increment.preference = preference;
                             }
                         }
                     }
@@ -160,13 +164,13 @@ export class CalendarPage {
                     let endingIncrementIndex = 0;
                     // finding a free set of increments for the task
                     for (let increment of this.calendar) {
-                        if (increment.color == 'white') {
+                        if (!increment.task && !increment.preference) {
                             if (incrementCounter == 0) {
                                 startingIncrementIndex = this.calendar.indexOf(increment);
                             }
                             incrementCounter++;
                         }
-                        else if (increment.color != 'white' && incrementCounter < durationIncrements) {
+                        else if ((increment.task || increment.preference) && incrementCounter < durationIncrements) {
                             incrementCounter = 0;
                         }
                         if (incrementCounter >= durationIncrements) {
@@ -228,6 +232,7 @@ export class CalendarPage {
                 this.calendar[i].eventBorder = '1px solid white';
             }
             this.calendar[i].color='blue';
+            this.calendar[i].task = task;
         }
     }
     minsToMilitary(totalMins: number): number {
