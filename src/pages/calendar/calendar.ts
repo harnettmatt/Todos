@@ -142,6 +142,62 @@ export class CalendarPage {
         });
     }
 
+    clearCalendarTasks() {
+        for (let increment of this.calendar) {
+            if (increment.task) {
+                if (increment.time % 60 == 45) {
+                    increment.eventBorder = '1px dashed';
+                }
+                else {
+                    increment.eventBorder = '';
+                }
+                increment.color = 'white';
+                increment.eventLabel = '';
+                increment.task = false;
+
+            }
+        }
+    }
+
+    hardTaskSchedule() {
+        this.clearCalendarTasks();
+        // this block below is unscheduling the tasks for today
+        let todayNumber = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
+        console.log(todayNumber);
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', todayNumber));
+        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                let task = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                task.id = id
+                return task;
+            });
+        });
+        let updateTasks = [];
+        let promise = new Promise((resolve, reject) => {
+            this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
+                tasks.forEach(task => {
+                    task.scheduledDate = -1;
+                    task.scheduledTime = -1;
+                    updateTasks.push(task);
+                });
+                resolve();
+            });
+        });
+
+        promise.then(() => {
+            this.tasksSubscription.unsubscribe();
+                let updatePromises = [];
+                for (let task of updateTasks) {
+                    let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
+                    updatePromises.push(taskDoc.update(task));
+                }
+                Promise.all(updatePromises).then(() => {
+                    this.scheduleTasks();
+                });
+        });
+    }
+
     scheduleTasks() {
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', -1));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
@@ -153,7 +209,6 @@ export class CalendarPage {
             });
         });
         let updateTasks = [];
-        let tasksSubscription = false;
         let promise = new Promise((resolve, reject) => {
             this.unscheduledTasksSubscription = this.tasksSnapshot.subscribe(tasks => {
                 tasks.forEach(task => {
