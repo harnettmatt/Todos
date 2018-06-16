@@ -2,5 +2,7 @@
   "name": "Todos",
   "app_id": "439a9765",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }
