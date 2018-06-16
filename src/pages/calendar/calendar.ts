@@ -49,7 +49,7 @@ export class CalendarPage {
         this.buildCalendar();
         this.buildPreferences();
         this.buildTasks();
-        this.scheduleTasks();
+        // this.scheduleTasks();
     }
 
     buildCalendar() {
