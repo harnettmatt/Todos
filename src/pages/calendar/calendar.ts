@@ -153,7 +153,7 @@ export class CalendarPage {
                 }
                 increment.color = 'white';
                 increment.eventLabel = '';
-                increment.task = false;
+                increment.task = null;
 
             }
         }
