@@ -3,6 +3,7 @@
         <ion-title> {{ date | date: 'EEEE, MMM d'}}</ion-title>
         <ion-buttons end>
             <button ion-button (click)="previousDay()" class="nav-buttons"><ion-icon name="md-arrow-dropleft-circle"></ion-icon></button>
+            <button ion-button (click)="scheduleTasks()" class="nav-buttons"> <ion-icon name="clipboard"></ion-icon></button>
             <button ion-button (click)="nextDay()" class="nav-buttons"><ion-icon name="md-arrow-dropright-circle"></ion-icon></button>
         </ion-buttons>
     </ion-navbar>

@@ -49,7 +49,6 @@ export class CalendarPage {
         this.buildCalendar();
         this.buildPreferences();
         this.buildTasks();
-        // this.scheduleTasks();
     }
 
     buildCalendar() {
