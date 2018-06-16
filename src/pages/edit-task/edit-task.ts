@@ -35,7 +35,8 @@ export class EditTaskPage {
         let scheduledDate = this.editTask.scheduledDate;
         let scheduledTime = this.editTask.scheduledTime;
         let permissionToUpdate = true;
-        if (Number(this.editTaskForm.value['duration']) != this.editTask.duration) {
+        // if the task duration is being changed and the task has already been scheduled
+        if (Number(this.editTaskForm.value['duration']) != this.editTask.duration && this.editTask.scheduledDate > -1) {
             let alert = this.alertCtrl.create({
                 title: 'Confirm changes',
                 message: 'This task has already been scheduled, adjusting duration will require a reschedule.',
