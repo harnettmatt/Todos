@@ -60,11 +60,12 @@ export class EditTaskPage {
             alert.present();
         }
         if (permissionToUpdate) {
+            let due = new Date(this.editTaskForm.value['due']);
             this.editTask = {
                 id: this.editTaskID,
                 completed: this.editTask.completed,
                 description: this.editTaskForm.value['description'],
-                due: this.editTaskForm.value['due'],
+                due: due,
                 duration: Number(this.editTaskForm.value['duration']),
                 durationUnit: this.editTaskForm.value['durationUnit'],
                 name: this.editTaskForm.value['name'],

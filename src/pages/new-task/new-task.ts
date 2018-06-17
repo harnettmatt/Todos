@@ -28,10 +28,11 @@ export class NewTaskPage {
     }
 
     submitForm() {
+        let due = new Date(this.newTaskForm.value['due']);
         this.newTask = {
             completed: false,
             description: '',
-            due: this.newTaskForm.value['due'],
+            due: due,
             duration: Number(this.newTaskForm.value['duration']),
             durationUnit: this.newTaskForm.value['durationUnit'],
             name: this.newTaskForm.value['name'],
