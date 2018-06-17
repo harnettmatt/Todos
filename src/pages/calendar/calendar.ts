@@ -39,6 +39,7 @@ export class CalendarPage {
         else {
             this.date = new Date();
         }
+        this.date.setHours(0,0,0,0);
 
         let time = 1230;
         let hours = Number(time.toString().slice(0,2));
@@ -118,8 +119,7 @@ export class CalendarPage {
     }
 
     buildTasks() {
-        let todayNumber = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
-        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', todayNumber));
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let task = a.payload.doc.data() as Task;
@@ -235,7 +235,7 @@ export class CalendarPage {
                     let totalMins = startingIncrementIndex * 15;
                     task.scheduledTime = this.minsToMilitary(totalMins);
                     this.addTaskToCalendar(task);
-                    task.scheduledDate = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
+                    task.scheduledDate = this.date;
                     updateTasks.push(task);
                 });
                 resolve();
