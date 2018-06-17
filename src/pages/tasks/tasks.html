@@ -6,8 +6,56 @@
 
 <ion-content>
     <ion-list>
-        <ion-item-sliding *ngFor='let task of tasks | async'>
+        <ion-item-divider color='light'> Overdue Tasks </ion-item-divider>
+        <ion-item-sliding *ngFor='let task of overdue'>
+            <button ion-item class='sliding-item-button' (click)="editTask(task)">
+                <ion-row class="top-row">
+                    <ion-col> {{ task.name }} </ion-col>
+                    <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnit }}  </ion-col>
+                </ion-row>
+                <ion-row class="bottom-row">
+                    <ion-col> project </ion-col>
+                    <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
+                </ion-row>
+            </button>
 
+            <ion-item-options side="left">
+                <button ion-button color="secondary" (click)="completeTask(task)">Complete</button>
+            </ion-item-options>
+
+            <ion-item-options side="right">
+                <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
+            </ion-item-options>
+
+        </ion-item-sliding>
+    </ion-list>
+    <ion-list>
+        <ion-item-divider color='light'> Tasks </ion-item-divider>
+        <ion-item-sliding *ngFor='let task of otherTasks'>
+            <button ion-item class='sliding-item-button' (click)="editTask(task)">
+                <ion-row class="top-row">
+                    <ion-col> {{ task.name }} </ion-col>
+                    <ion-col class="right-col">  {{ task.duration }} {{ task.durationUnit }}  </ion-col>
+                </ion-row>
+                <ion-row class="bottom-row">
+                    <ion-col> project </ion-col>
+                    <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
+                </ion-row>
+            </button>
+
+            <ion-item-options side="left">
+                <button ion-button color="secondary" (click)="completeTask(task)">Complete</button>
+            </ion-item-options>
+
+            <ion-item-options side="right">
+                <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
+            </ion-item-options>
+
+        </ion-item-sliding>
+    </ion-list>
+    <ion-list>
+        <ion-item-divider color='light'> Completed Tasks </ion-item-divider>
+        <ion-item-sliding *ngFor='let task of completed'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>

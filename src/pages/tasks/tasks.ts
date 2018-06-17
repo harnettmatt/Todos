@@ -26,17 +26,47 @@ export interface Task {
 
 export class TasksPage {
     tasksCollection: AngularFirestoreCollection<Task>;
-    tasks: Observable<Task[]>;
+    tasksSnapshot: Observable<Task[]>;
+    date: Date;
+    overdue: Task[];
+    completed: Task[];
+    otherTasks: Task[];
+    tasksSubscription: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+        this.date = new Date();
+        this.overdue = [];
+        this.completed = [];
+        this.otherTasks = [];
         this.tasksCollection = afs.collection('tasks');
-        this.tasks = this.tasksCollection.snapshotChanges().map(actions => {
+        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 const task = a.payload.doc.data() as Task;
                 const id = a.payload.doc.id;
                 task.id = id;
                 return task;
             });
+        });
+        let promise = new Promise((resolve, reject) => {
+            this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
+                tasks.forEach(task => {
+                    console.log(task);
+                    if (task.completed) {
+                        this.completed.push(task);
+                    }
+                    else if (task.due < this.date) {
+                        this.overdue.push(task);
+                    }
+                    else {
+                        this.otherTasks.push(task);
+                    }
+                });
+                resolve();
+            });
+
+        });
+        promise.then(() => {
+            this.tasksSubscription.unsubscribe();
         });
     }
 
