@@ -10,7 +10,7 @@ export interface Task {
     completed:      boolean;
     name:           string;
     description:    string;
-    due:            string;
+    due:            Date;
     scheduledDate?: number;
     scheduledTime?: number;
     duration:       number;
