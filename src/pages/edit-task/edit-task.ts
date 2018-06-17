@@ -61,6 +61,7 @@ export class EditTaskPage {
         }
         if (permissionToUpdate) {
             let due = new Date(this.editTaskForm.value['due']);
+            due.setHours(0,0,0,0);
             this.editTask = {
                 id: this.editTaskID,
                 completed: this.editTask.completed,

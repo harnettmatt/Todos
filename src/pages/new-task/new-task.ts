@@ -29,6 +29,7 @@ export class NewTaskPage {
 
     submitForm() {
         let due = new Date(this.newTaskForm.value['due']);
+        due.setHours(0,0,0,0);
         this.newTask = {
             completed: false,
             description: '',
