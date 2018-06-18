@@ -33,12 +33,15 @@ export class TasksPage {
     otherTasks: Task[];
     tasksSubscription: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public afs: AngularFirestore) {
         this.date = new Date();
         this.overdue = [];
         this.completed = [];
         this.otherTasks = [];
-        this.tasksCollection = afs.collection('tasks');
+    }
+
+    ionViewWillEnter() {
+        this.tasksCollection = this.afs.collection('tasks');
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 const task = a.payload.doc.data() as Task;
@@ -87,7 +90,7 @@ export class TasksPage {
             this.overdue.splice(overdueIndex, 1);
             this.completed.push(task);
         }
-        let otherTasksIndex = this.overdue.indexOf(task);
+        let otherTasksIndex = this.otherTasks.indexOf(task);
         if (otherTasksIndex > -1) {
             this.otherTasks.splice(otherTasksIndex, 1);
             this.completed.push(task);
