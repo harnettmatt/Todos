@@ -100,5 +100,17 @@ export class TasksPage {
     deleteTask(task) {
         let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
         taskDoc.delete();
+        let overdueIndex = this.overdue.indexOf(task);
+        if (overdueIndex > -1) {
+            this.overdue.splice(overdueIndex, 1);
+        }
+        let otherTasksIndex = this.otherTasks.indexOf(task);
+        if (otherTasksIndex > -1) {
+            this.otherTasks.splice(otherTasksIndex, 1);
+        }
+        let completedIndex = this.completed.indexOf(task);
+        if (completedIndex > -1) {
+            this.completed.splice(completedIndex, 1);
+        }
     }
 }
