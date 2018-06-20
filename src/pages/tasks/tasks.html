@@ -28,8 +28,6 @@
             </ion-item-options>
 
         </ion-item-sliding>
-    </ion-list>
-    <ion-list>
         <ion-item-divider color='light'> Tasks </ion-item-divider>
         <ion-item-sliding *ngFor='let task of tasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
@@ -52,8 +50,6 @@
             </ion-item-options>
 
         </ion-item-sliding>
-    </ion-list>
-    <ion-list>
         <ion-item-divider color='light'> Completed Tasks </ion-item-divider>
         <ion-item-sliding *ngFor='let task of completedTasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
