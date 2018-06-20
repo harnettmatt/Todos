@@ -7,7 +7,7 @@
 <ion-content>
     <ion-list>
         <ion-item-divider color='light'> Overdue Tasks </ion-item-divider>
-        <ion-item-sliding *ngFor='let task of overdue'>
+        <ion-item-sliding *ngFor='let task of overdueTasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>
@@ -31,7 +31,7 @@
     </ion-list>
     <ion-list>
         <ion-item-divider color='light'> Tasks </ion-item-divider>
-        <ion-item-sliding *ngFor='let task of otherTasks'>
+        <ion-item-sliding *ngFor='let task of tasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>
@@ -55,7 +55,7 @@
     </ion-list>
     <ion-list>
         <ion-item-divider color='light'> Completed Tasks </ion-item-divider>
-        <ion-item-sliding *ngFor='let task of completed'>
+        <ion-item-sliding *ngFor='let task of completedTasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>

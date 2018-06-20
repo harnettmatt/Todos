@@ -25,24 +25,19 @@ export interface Task {
 })
 
 export class TasksPage {
+    overdueTasksCollection: AngularFirestoreCollection<Task>;
+    overdueTasks: Observable<Task[]>;
     tasksCollection: AngularFirestoreCollection<Task>;
-    tasksSnapshot: Observable<Task[]>;
+    tasks: Observable<Task[]>;
+    completedTasksCollection: AngularFirestoreCollection<Task>;
+    completedTasks: Observable<Task[]>;
     date: Date;
-    overdue: Task[];
-    completed: Task[];
-    otherTasks: Task[];
-    tasksSubscription: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public afs: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
         this.date = new Date();
-        this.overdue = [];
-        this.completed = [];
-        this.otherTasks = [];
-    }
-
-    ionViewWillEnter() {
-        this.tasksCollection = this.afs.collection('tasks');
-        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
+        this.date.setHours(0,0,0,0);
+        this.overdueTasksCollection = afs.collection('tasks', ref => ref.where('due', '<', this.date).where('completed', '==', false));
+        this.overdueTasks = this.overdueTasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 const task = a.payload.doc.data() as Task;
                 const id = a.payload.doc.id;
@@ -50,26 +45,23 @@ export class TasksPage {
                 return task;
             });
         });
-        let promise = new Promise((resolve, reject) => {
-            this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
-                tasks.forEach(task => {
-                    console.log(task);
-                    if (task.completed) {
-                        this.completed.push(task);
-                    }
-                    else if (task.due < this.date) {
-                        this.overdue.push(task);
-                    }
-                    else {
-                        this.otherTasks.push(task);
-                    }
-                });
-                resolve();
+        this.tasksCollection = afs.collection('tasks', ref => ref.where('due', '>=', this.date).where('completed', '==', false));
+        this.tasks = this.tasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const task = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                task.id = id;
+                return task;
             });
-
         });
-        promise.then(() => {
-            this.tasksSubscription.unsubscribe();
+        this.completedTasksCollection = afs.collection('tasks', ref => ref.where('completed', '==', true));
+        this.completedTasks = this.completedTasksCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const task = a.payload.doc.data() as Task;
+                const id = a.payload.doc.id;
+                task.id = id;
+                return task;
+            });
         });
     }
 
@@ -85,32 +77,10 @@ export class TasksPage {
         task.completed = true;
         let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
         taskDoc.update(task);
-        let overdueIndex = this.overdue.indexOf(task);
-        if (overdueIndex > -1) {
-            this.overdue.splice(overdueIndex, 1);
-            this.completed.push(task);
-        }
-        let otherTasksIndex = this.otherTasks.indexOf(task);
-        if (otherTasksIndex > -1) {
-            this.otherTasks.splice(otherTasksIndex, 1);
-            this.completed.push(task);
-        }
     }
 
     deleteTask(task) {
         let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
         taskDoc.delete();
-        let overdueIndex = this.overdue.indexOf(task);
-        if (overdueIndex > -1) {
-            this.overdue.splice(overdueIndex, 1);
-        }
-        let otherTasksIndex = this.otherTasks.indexOf(task);
-        if (otherTasksIndex > -1) {
-            this.otherTasks.splice(otherTasksIndex, 1);
-        }
-        let completedIndex = this.completed.indexOf(task);
-        if (completedIndex > -1) {
-            this.completed.splice(completedIndex, 1);
-        }
     }
 }
