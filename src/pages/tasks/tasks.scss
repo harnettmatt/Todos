@@ -1,15 +1,24 @@
 page-tasks {
 
+    .divider {
+        padding-left: 16px;
+    }
+
     .sliding-item-button {
         padding-left: 0px;
     }
 
-    .item-inner {
-        padding-left: 8px;
-        padding-right: 8px;
+    .top-row {
+        padding-left: 11px;
     }
 
+    // .item-inner {
+    //     padding-left: 8px;
+    //     padding-right: 8px;
+    // }
+
     .bottom-row {
+        padding-left: 11px;
         color: gray;
         font-size: 12px;
     }
