@@ -14,7 +14,6 @@ export interface Task {
     scheduledDate?: number;
     scheduledTime?: number;
     duration:       number;
-    durationUnit:   string;
     priority:       number;
 }
 

@@ -25,7 +25,6 @@ export class EditTaskPage {
             description: [this.editTask.description],
             due: [this.editTask.due],
             duration: [this.editTask.duration],
-            durationUnit: [this.editTask.durationUnit],
             priority: [this.editTask.priority]
         });
         this.tasksCollection = this.afs.collection('tasks');
@@ -68,7 +67,6 @@ export class EditTaskPage {
                 description: this.editTaskForm.value['description'],
                 due: due,
                 duration: Number(this.editTaskForm.value['duration']),
-                durationUnit: this.editTaskForm.value['durationUnit'],
                 name: this.editTaskForm.value['name'],
                 priority: this.editTaskForm.value['priority'],
                 scheduledDate: scheduledDate,

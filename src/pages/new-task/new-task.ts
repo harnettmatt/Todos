@@ -21,7 +21,6 @@ export class NewTaskPage {
             description: [''],
             due: [''],
             duration: [''],
-            durationUnit: [''],
             priority: ['']
         });
         this.tasksCollection = this.afs.collection('tasks');
@@ -35,7 +34,6 @@ export class NewTaskPage {
             description: '',
             due: due,
             duration: Number(this.newTaskForm.value['duration']),
-            durationUnit: this.newTaskForm.value['durationUnit'],
             name: this.newTaskForm.value['name'],
             priority: this.newTaskForm.value['priority'],
             scheduledDate: -1,
