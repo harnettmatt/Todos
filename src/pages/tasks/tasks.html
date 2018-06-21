@@ -1,11 +1,15 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Tasks</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="addTask()" class="nav-buttons"><ion-icon name="add"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
+
         <ion-item-divider color='light' class="divider"> Overdue Tasks </ion-item-divider>
         <ion-item-sliding *ngFor='let task of overdueTasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
@@ -18,16 +22,14 @@
                     <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
                 </ion-row>
             </button>
-
             <ion-item-options side="left">
                 <button ion-button color="secondary" (click)="completeTask(task)">Complete</button>
             </ion-item-options>
-
             <ion-item-options side="right">
                 <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
             </ion-item-options>
-
         </ion-item-sliding>
+
         <ion-item-divider color='light' class="divider"> Tasks </ion-item-divider>
         <ion-item-sliding *ngFor='let task of tasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
@@ -40,16 +42,14 @@
                     <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
                 </ion-row>
             </button>
-
             <ion-item-options side="left">
                 <button ion-button color="secondary" (click)="completeTask(task)">Complete</button>
             </ion-item-options>
-
             <ion-item-options side="right">
                 <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
             </ion-item-options>
-
         </ion-item-sliding>
+
         <ion-item-divider color='light' class="divider"> Completed Tasks </ion-item-divider>
         <ion-item-sliding *ngFor='let task of completedTasks | async'>
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
@@ -66,12 +66,10 @@
             <ion-item-options side="left">
                 <button ion-button color="secondary" (click)="completeTask(task)">Complete</button>
             </ion-item-options>
-
             <ion-item-options side="right">
                 <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
             </ion-item-options>
-
         </ion-item-sliding>
-        <button ion-button center (click)="addTask()" block id="add-task">Create Task</button>
+
     </ion-list>
 </ion-content>
