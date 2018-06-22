@@ -23,7 +23,7 @@ export class EditTaskPage {
         this.editTaskForm = this.formBuilder.group({
             name: [this.editTask.name],
             description: [this.editTask.description],
-            due: [this.editTask.due],
+            due: [this.editTask.due.toISOString().substring(0,10)],
             duration: [this.editTask.duration],
             priority: [this.editTask.priority]
         });
