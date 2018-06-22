@@ -1,5 +1,34 @@
 page-calendar {
 
+    .top-increment-scheduled {
+        border-top: 4px solid;
+        border-left: 4px solid;
+        border-right: 4px solid;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .bottom-increment-scheduled {
+        border-bottom: 4px solid;
+        border-left: 4px solid;
+        border-right: 4px solid;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .middle-increment-scheduled {
+        border-left: 4px solid;
+        border-right: 4px solid;
+    }
+
+    .unscheduled {
+        background-color: white;
+    }
+
+    .unscheduled-time {
+        border-bottom: 1px dashed;
+    }
+
     .nav-buttons {
         font-size: 25px;
     }

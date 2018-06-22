@@ -9,7 +9,8 @@ interface CalendarIncrement {
     timeLabel:      string;
     eventLabel:     string;
     time:           number;
-    eventBorder:    string;
+    borderColor:    string;
+    cssClass:       string;
     color:          string;
     task?:          Task;
     preference?:    Preference;
@@ -55,22 +56,25 @@ export class CalendarPage {
     buildCalendar() {
         this.calendar = [];
         for (let x=0; x<96; x++) {
-            let eventBorder = '0px solid';
+            let borderColor = 'white';
             let label = '';
+            let cssClass = 'unscheduled';
             let totalMins = x*15;
             let time = this.minsToMilitary(totalMins);
             if (totalMins % 60 == 0 && time != 0) {
                 label = this.minsToString(totalMins);
             }
             if (totalMins % 60 == 45) {
-                eventBorder = '1px dashed';
+                borderColor = 'black';
+                cssClass = 'unscheduled-time';
             }
             let increment = {
                 'timeLabel': label,
                 'eventLabel': '',
                 'time': time,
-                'eventBorder': eventBorder,
-                'color': 'white'
+                'borderColor': borderColor,
+                'color': 'white',
+                'cssClass': cssClass
             }
             this.calendar.push(increment);
         }
@@ -91,12 +95,30 @@ export class CalendarPage {
                  preferences.forEach(preference => {
                     if (preference.name == 'sleep') {
                         for (let increment of this.calendar) {
-                            if (preference.to > increment.time && increment.time >= 0) {
-                                increment.color = 'gray';
+                            if (preference.from == increment.time) {
+                                increment.cssClass = 'top-increment-scheduled';
+                                increment.color = '#adacac';
+                                increment.borderColor = 'gray';
                                 increment.preference = preference;
                             }
-                            if (2400 >= increment.time && increment.time >= preference.from) {
-                                increment.color = 'gray';
+                            else if (preference.to == increment.time) {
+                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
+
+                                this.calendar[previousIncrementIndex].cssClass = 'bottom-increment-scheduled';
+                                this.calendar[previousIncrementIndex].color = '#adacac';
+                                this.calendar[previousIncrementIndex].borderColor = 'gray';
+                                this.calendar[previousIncrementIndex].preference = preference;
+                            }
+                            else if (preference.to > increment.time && increment.time >= 0) {
+                                increment.cssClass = 'middle-increment-scheduled';
+                                increment.color = '#adacac';
+                                increment.borderColor = 'gray';
+                                increment.preference = preference;
+                            }
+                            else if (2400 >= increment.time && increment.time >= preference.from) {
+                                increment.cssClass = 'middle-increment-scheduled';
+                                increment.color = '#adacac';
+                                increment.borderColor = 'gray';
                                 increment.preference = preference;
                             }
                         }
@@ -146,10 +168,12 @@ export class CalendarPage {
         for (let increment of this.calendar) {
             if (increment.task) {
                 if (increment.time % 60 == 45) {
-                    increment.eventBorder = '1px dashed';
+                    increment.borderColor = 'black';
+                    increment.cssClass = 'unscheduled-time';
                 }
                 else {
-                    increment.eventBorder = '';
+                    increment.cssClass = 'unscheduled';
+                    increment.borderColor = 'white';
                 }
                 increment.color = 'white';
                 increment.eventLabel = '';
@@ -283,7 +307,7 @@ export class CalendarPage {
                 this.calendar[i].eventLabel = task.name;
             }
             if (i + 1 == endingIncrementIndex) {
-                this.calendar[i].eventBorder = '1px solid white';
+                this.calendar[i].borderColor = '1px solid white';
             }
             this.calendar[i].color='blue';
             this.calendar[i].task = task;
