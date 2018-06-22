@@ -20,7 +20,16 @@
         </ion-item>
         <ion-item>
             <ion-label>Duration: </ion-label>
-            <ion-input type="number" formControlName="duration"></ion-input>
+            <ion-select formControlName="duration" interface="popover">
+                <ion-option value=15>15 mins</ion-option>
+                <ion-option value=30>30 mins</ion-option>
+                <ion-option value=45>45 mins</ion-option>
+                <ion-option value=60>1 hour</ion-option>
+                <ion-option value=75>1.25 hours</ion-option>
+                <ion-option value=90>1.5 hours</ion-option>
+                <ion-option value=105>1.75 hours</ion-option>
+                <ion-option value=120>2 hours</ion-option>
+            </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Priority: </ion-label>
