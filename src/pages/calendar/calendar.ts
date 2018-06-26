@@ -320,12 +320,18 @@ export class CalendarPage {
         let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
         for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
             if (i == startingIncrementIndex) {
+                this.calendar[i].cssClass = 'top-increment-scheduled';
                 this.calendar[i].eventLabel = task.name;
             }
-            if (i + 1 == endingIncrementIndex) {
-                this.calendar[i].borderColor = '1px solid white';
+
+            else if (i + 1 == endingIncrementIndex) {
+                this.calendar[i].cssClass = 'bottom-increment-scheduled';
             }
-            this.calendar[i].color='blue';
+            else {
+                this.calendar[i].cssClass = 'middle-increment-scheduled';
+            }
+            this.calendar[i].color = 'lightgreen';
+            this.calendar[i].borderColor = 'green';
             this.calendar[i].task = task;
         }
     }
