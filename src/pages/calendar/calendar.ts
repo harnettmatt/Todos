@@ -317,24 +317,34 @@ export class CalendarPage {
     addTaskToCalendar(task: Task) {
         let totalMins = this.militarytoMins(task.scheduledTime);
         let startingIncrementIndex = totalMins/15;
-        let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
-        for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
-            if (i == startingIncrementIndex) {
-                this.calendar[i].cssClass = 'top-increment-scheduled';
-                this.calendar[i].eventLabel = task.name;
-            }
+        if (task.duration == 15) {
+            this.calendar[startingIncrementIndex].color = 'lightgreen';
+            this.calendar[startingIncrementIndex].borderColor = 'green';
+            this.calendar[startingIncrementIndex].task = task;
+            this.calendar[startingIncrementIndex].cssClass = 'top-bottom-increment-scheduled';
+            this.calendar[startingIncrementIndex].eventLabel = task.name;
+        }
+        else {
+            let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
+            for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
+                if (i == startingIncrementIndex) {
+                    this.calendar[i].cssClass = 'top-increment-scheduled';
+                    this.calendar[i].eventLabel = task.name;
+                }
 
-            else if (i + 1 == endingIncrementIndex) {
-                this.calendar[i].cssClass = 'bottom-increment-scheduled';
+                else if (i + 1 == endingIncrementIndex) {
+                    this.calendar[i].cssClass = 'bottom-increment-scheduled';
+                }
+                else {
+                    this.calendar[i].cssClass = 'middle-increment-scheduled';
+                }
+                this.calendar[i].color = 'lightgreen';
+                this.calendar[i].borderColor = 'green';
+                this.calendar[i].task = task;
             }
-            else {
-                this.calendar[i].cssClass = 'middle-increment-scheduled';
-            }
-            this.calendar[i].color = 'lightgreen';
-            this.calendar[i].borderColor = 'green';
-            this.calendar[i].task = task;
         }
     }
+
     minsToMilitary(totalMins: number): number {
         let mins = totalMins % 60;
         let hours = Math.floor(totalMins / 60);
