@@ -125,8 +125,24 @@ export class CalendarPage {
                     }
                     else if (preference.name == 'work') {
                         for (let increment of this.calendar) {
-                            if (preference.to > increment.time && increment.time >= preference.from) {
+                            if (preference.from == increment.time) {
+                                increment.cssClass = 'top-increment-scheduled';
                                 increment.color = 'lightblue';
+                                increment.borderColor = '#49b4d8';
+                                increment.preference = preference;
+                            }
+                            else if (preference.to == increment.time) {
+                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
+
+                                this.calendar[previousIncrementIndex].cssClass = 'bottom-increment-scheduled';
+                                this.calendar[previousIncrementIndex].color = 'lightblue';
+                                this.calendar[previousIncrementIndex].borderColor = '#49b4d8';
+                                this.calendar[previousIncrementIndex].preference = preference;
+                            }
+                            else if (preference.to > increment.time && increment.time >= preference.from) {
+                                increment.cssClass = 'middle-increment-scheduled';
+                                increment.color = 'lightblue';
+                                increment.borderColor = '#49b4d8';
                                 increment.preference = preference;
                             }
                         }
