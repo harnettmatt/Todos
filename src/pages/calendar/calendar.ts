@@ -92,59 +92,24 @@ export class CalendarPage {
         });
         let promise = new Promise((resolve, reject) => {
             this.preferencesSubscription = this.preferencesSnapshot.subscribe(preferences => {
-                 preferences.forEach(preference => {
-                    if (preference.name == 'sleep') {
-                        for (let increment of this.calendar) {
-                            if (preference.from == increment.time) {
-                                increment.cssClass = 'top-increment-scheduled';
-                                increment.color = '#adacac';
-                                increment.borderColor = 'gray';
-                                increment.preference = preference;
-                            }
-                            else if (preference.to == increment.time) {
-                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-
-                                this.calendar[previousIncrementIndex].cssClass = 'bottom-increment-scheduled';
-                                this.calendar[previousIncrementIndex].color = '#adacac';
-                                this.calendar[previousIncrementIndex].borderColor = 'gray';
-                                this.calendar[previousIncrementIndex].preference = preference;
-                            }
-                            else if (preference.to > increment.time && increment.time >= 0) {
-                                increment.cssClass = 'middle-increment-scheduled';
-                                increment.color = '#adacac';
-                                increment.borderColor = 'gray';
-                                increment.preference = preference;
-                            }
-                            else if (2400 >= increment.time && increment.time >= preference.from) {
-                                increment.cssClass = 'middle-increment-scheduled';
-                                increment.color = '#adacac';
-                                increment.borderColor = 'gray';
-                                increment.preference = preference;
-                            }
+                preferences.forEach(preference => {
+                    for (let increment of this.calendar) {
+                        // begining of the interval
+                        if (preference.from == increment.time) {
+                            this.setIncrementPreferenceStyle(increment, preference, 'top-increment-scheduled');
                         }
-                    }
-                    else if (preference.name == 'work') {
-                        for (let increment of this.calendar) {
-                            if (preference.from == increment.time) {
-                                increment.cssClass = 'top-increment-scheduled';
-                                increment.color = 'lightblue';
-                                increment.borderColor = '#49b4d8';
-                                increment.preference = preference;
-                            }
-                            else if (preference.to == increment.time) {
-                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-
-                                this.calendar[previousIncrementIndex].cssClass = 'bottom-increment-scheduled';
-                                this.calendar[previousIncrementIndex].color = 'lightblue';
-                                this.calendar[previousIncrementIndex].borderColor = '#49b4d8';
-                                this.calendar[previousIncrementIndex].preference = preference;
-                            }
-                            else if (preference.to > increment.time && increment.time >= preference.from) {
-                                increment.cssClass = 'middle-increment-scheduled';
-                                increment.color = 'lightblue';
-                                increment.borderColor = '#49b4d8';
-                                increment.preference = preference;
-                            }
+                        // end of the interval
+                        else if (preference.to == increment.time) {
+                            let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
+                            this.setIncrementPreferenceStyle(this.calendar[previousIncrementIndex], preference, 'bottom-increment-scheduled');
+                        }
+                        // middle increment for sleep (this is a one-off because the interval goes between days)
+                        else if (preference.name == 'sleep' && ((preference.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= preference.from))) {
+                            this.setIncrementPreferenceStyle(increment, preference, 'middle-increment-scheduled');
+                        }
+                        // middle increment
+                        else if (preference.name != 'sleep' && preference.to > increment.time && increment.time >= preference.from) {
+                            this.setIncrementPreferenceStyle(increment, preference, 'middle-increment-scheduled');
                         }
                     }
                 });
@@ -359,6 +324,13 @@ export class CalendarPage {
         let hours = Number(timeString.slice(0,2));
         let mins = Number(timeString.slice(2,4));
         return (hours * 60) + mins;
+    }
+
+    setIncrementPreferenceStyle(increment: Increment, preference: Preference, cssClass: string) {
+        increment.cssClass = cssClass;
+        increment.borderColor = preference.borderColor;
+        increment.color = preference.color;
+        increment.preference = preference;
     }
 
     previousDay() {

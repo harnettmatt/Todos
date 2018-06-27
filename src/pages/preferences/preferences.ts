@@ -6,10 +6,12 @@ import { EditPreferencePage } from '../edit-preference/edit-preference';
 
 
 export interface Preference {
-    id:   string;
-    name: string;
-    from: number;
-    to:   number;
+    id:          string;
+    name:        string;
+    from:        number;
+    to:          number;
+    borderColor: string;
+    color:       string;
 }
 
 @IonicPage()
