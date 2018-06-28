@@ -33,8 +33,8 @@ export class EditPreferencePage {
             name: this.editPreferenceForm.value['name'],
             from: Number(this.editPreferenceForm.value['from']),
             to:   Number(this.editPreferenceForm.value['to']),
-            borderColor: this.borderColor,
-            color:       this.color
+            borderColor: this.editPreference.borderColor,
+            color:       this.editPreference.color
         }
         let taskDoc = this.afs.doc<Preference>('preferences/' + this.editPreferenceID);
         taskDoc.update(this.editPreference);
