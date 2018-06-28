@@ -4,6 +4,8 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import { Preference } from '../preferences/preferences';
 import { Task } from '../tasks/tasks';
+import { EditTaskPage } from '../edit-task/edit-task';
+import { EditPreferencePage } from '../edit-preference/edit-preference';
 
 interface CalendarIncrement {
     timeLabel:      string;
@@ -326,7 +328,6 @@ export class CalendarPage {
         return (hours * 60) + mins;
     }
 
-    setIncrementPreferenceStyle(increment: Increment, preference: Preference, cssClass: string) {
     setIncrementPreferenceStyle(increment: CalendarIncrement, preference: Preference, cssClass: string) {
         increment.cssClass = cssClass;
         increment.borderColor = preference.borderColor;
@@ -342,5 +343,14 @@ export class CalendarPage {
     nextDay() {
         this.date.setDate(this.date.getDate() + 1);
         this.navCtrl.setRoot(CalendarPage, {date: this.date}, {animate: false});
+    }
+
+    displayTask(increment: CalendarIncrement) {
+        if (increment.task) {
+            this.navCtrl.push(EditTaskPage, { data: increment.task });
+        }
+        else if (increment.preference) {
+            this.navCtrl.push(EditPreferencePage, { preference: increment.preference })
+        }
     }
 }
