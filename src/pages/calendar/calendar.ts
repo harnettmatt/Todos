@@ -206,7 +206,7 @@ export class CalendarPage {
     }
 
     scheduleTasks() {
-        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', -1));
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', -1).where('completed', '==', false));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let task = a.payload.doc.data() as Task;
