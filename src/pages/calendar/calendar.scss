@@ -1,34 +1,29 @@
 page-calendar {
 
-    :root {
-        --scheduled-border-thickness: 2px solid;
-        --scheduled-border-radius: 15px;
-    }
-
     .top-increment-scheduled {
-        border-top: var(--scheduled-border-thickness);
-        border-left: var(--scheduled-border-thickness);
-        border-right: var(--scheduled-border-thickness);
-        border-top-left-radius: var(--scheduled-border-radius);
-        border-top-right-radius: var(--scheduled-border-radius);
+        border-top: 2px solid;
+        border-left: 2px solid;
+        border-right: 2px solid;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
     }
 
     .bottom-increment-scheduled {
-        border-bottom: var(--scheduled-border-thickness);
-        border-left: var(--scheduled-border-thickness);
-        border-right: var(--scheduled-border-thickness);
-        border-bottom-left-radius: var(--scheduled-border-radius);
-        border-bottom-right-radius: var(--scheduled-border-radius);
+        border-bottom: 2px solid;
+        border-left: 2px solid;
+        border-right: 2px solid;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
     }
 
     .top-bottom-increment-scheduled {
-        border: var(--scheduled-border-thickness);
-        border-radius: var(--scheduled-border-radius);
+        border: 2px solid;
+        border-radius: 15px;
     }
 
     .middle-increment-scheduled {
-        border-left: var(--scheduled-border-thickness);
-        border-right: var(--scheduled-border-thickness);
+        border-left: 2px solid;
+        border-right: 2px solid;
     }
 
     .unscheduled {
