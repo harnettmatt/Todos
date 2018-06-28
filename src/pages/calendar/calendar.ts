@@ -169,9 +169,7 @@ export class CalendarPage {
     hardTaskSchedule() {
         this.clearCalendarTasks();
         // this block below is unscheduling the tasks for today
-        let todayNumber = (((this.date.getFullYear() * 100) + this.date.getMonth() + 1) * 100) + this.date.getDate();
-        console.log(todayNumber);
-        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', todayNumber));
+        this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let task = a.payload.doc.data() as Task;
@@ -194,14 +192,15 @@ export class CalendarPage {
 
         promise.then(() => {
             this.tasksSubscription.unsubscribe();
-                let updatePromises = [];
-                for (let task of updateTasks) {
-                    let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
-                    updatePromises.push(taskDoc.update(task));
-                }
-                Promise.all(updatePromises).then(() => {
-                    this.scheduleTasks();
-                });
+            let updatePromises = [];
+            for (let task of updateTasks) {
+                let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
+                updatePromises.push(taskDoc.update(task));
+                console.log('updating task' + task.name + " " + task.scheduledDate);
+            }
+            Promise.all(updatePromises).then(() => {
+                this.scheduleTasks();
+            });
         });
     }
 
