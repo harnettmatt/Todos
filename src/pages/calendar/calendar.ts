@@ -327,6 +327,7 @@ export class CalendarPage {
     }
 
     setIncrementPreferenceStyle(increment: Increment, preference: Preference, cssClass: string) {
+    setIncrementPreferenceStyle(increment: CalendarIncrement, preference: Preference, cssClass: string) {
         increment.cssClass = cssClass;
         increment.borderColor = preference.borderColor;
         increment.color = preference.color;
