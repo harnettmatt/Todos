@@ -217,6 +217,12 @@ export class CalendarPage {
         let updateTasks = [];
         let promise = new Promise((resolve, reject) => {
             this.unscheduledTasksSubscription = this.tasksSnapshot.subscribe(tasks => {
+                tasks.sort(function (a, b) {
+                    // sort function natively sorts in ascending order
+                    // by subtracting dates we are creating our own score to sort on
+                    // if the score is 0, use the next metric, duration
+                    return a.due - b.due || b.duration - a.duration;
+                });
                 tasks.forEach(task => {
                     let durationIncrements = task.duration/15
                     let incrementCounter = 0;
