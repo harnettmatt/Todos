@@ -16,6 +16,7 @@ interface CalendarIncrement {
     color:          string;
     task?:          Task;
     preference?:    Preference;
+    type:           string;
 }
 
 @IonicPage()
@@ -96,22 +97,23 @@ export class CalendarPage {
             this.preferencesSubscription = this.preferencesSnapshot.subscribe(preferences => {
                 preferences.forEach(preference => {
                     for (let increment of this.calendar) {
+                        increment.type = 'personal';
                         // begining of the interval
                         if (preference.from == increment.time) {
-                            this.setIncrementPreferenceStyle(increment, preference, 'top-increment-scheduled');
+                            this.setIncrementPreference(increment, preference, 'top-increment-scheduled');
                         }
                         // end of the interval
                         else if (preference.to == increment.time) {
                             let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-                            this.setIncrementPreferenceStyle(this.calendar[previousIncrementIndex], preference, 'bottom-increment-scheduled');
+                            this.setIncrementPreference(this.calendar[previousIncrementIndex], preference, 'bottom-increment-scheduled');
                         }
                         // middle increment for sleep (this is a one-off because the interval goes between days)
                         else if (preference.name == 'sleep' && ((preference.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= preference.from))) {
-                            this.setIncrementPreferenceStyle(increment, preference, 'middle-increment-scheduled');
+                            this.setIncrementPreference(increment, preference, 'middle-increment-scheduled');
                         }
                         // middle increment
                         else if (preference.name != 'sleep' && preference.to > increment.time && increment.time >= preference.from) {
-                            this.setIncrementPreferenceStyle(increment, preference, 'middle-increment-scheduled');
+                            this.setIncrementPreference(increment, preference, 'middle-increment-scheduled');
                         }
                     }
                 });
@@ -230,13 +232,13 @@ export class CalendarPage {
                     let endingIncrementIndex = 0;
                     // finding a free set of increments for the task
                     for (let increment of this.calendar) {
-                        if (!increment.task && !increment.preference) {
+                        if (!increment.task && increment.type == task.type) {
                             if (incrementCounter == 0) {
                                 startingIncrementIndex = this.calendar.indexOf(increment);
                             }
                             incrementCounter++;
                         }
-                        else if ((increment.task || increment.preference) && incrementCounter < durationIncrements) {
+                        else if ((increment.task || increment.type != task.type) && incrementCounter < durationIncrements) {
                             incrementCounter = 0;
                         }
                         if (incrementCounter >= durationIncrements) {
@@ -310,8 +312,8 @@ export class CalendarPage {
                 else {
                     this.calendar[i].cssClass = 'middle-increment-scheduled';
                 }
-                this.calendar[i].color = 'lightgreen';
-                this.calendar[i].borderColor = 'green';
+                this.calendar[i].color = '#D9F1FE';
+                this.calendar[i].borderColor = '#83d1fc';
                 this.calendar[i].task = task;
             }
         }
@@ -333,11 +335,12 @@ export class CalendarPage {
         return (hours * 60) + mins;
     }
 
-    setIncrementPreferenceStyle(increment: CalendarIncrement, preference: Preference, cssClass: string) {
+    setIncrementPreference(increment: CalendarIncrement, preference: Preference, cssClass: string) {
         increment.cssClass = cssClass;
-        increment.borderColor = preference.borderColor;
+        increment.borderColor = preference.color;
         increment.color = preference.color;
         increment.preference = preference;
+        increment.type = preference.name;
     }
 
     previousDay() {

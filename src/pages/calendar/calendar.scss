@@ -5,29 +5,29 @@ page-calendar {
     }
 
     .top-increment-scheduled {
-        border-top: 2px solid;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
+        border-top: 4px solid;
+        border-left: 4px solid;
+        border-right: 4px solid;
+        // border-top-left-radius: 15px;
+        // border-top-right-radius: 15px;
     }
 
     .bottom-increment-scheduled {
-        border-bottom: 2px solid;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+        border-bottom: 4px solid;
+        border-left: 4px solid;
+        border-right: 4px solid;
+        // border-bottom-left-radius: 15px;
+        // border-bottom-right-radius: 15px;
     }
 
     .top-bottom-increment-scheduled {
-        border: 2px solid;
-        border-radius: 15px;
+        border: 4px solid;
+        // border-radius: 15px;
     }
 
     .middle-increment-scheduled {
-        border-left: 2px solid;
-        border-right: 2px solid;
+        border-left: 4px solid;
+        border-right: 4px solid;
     }
 
     .unscheduled {
