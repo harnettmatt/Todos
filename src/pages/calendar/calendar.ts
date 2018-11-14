@@ -221,7 +221,7 @@ export class CalendarPage {
                     // sort function natively sorts in ascending order
                     // by subtracting dates we are creating our own score to sort on
                     // if the score is 0, use the next metric, duration
-                    return a.due - b.due || b.duration - a.duration;
+                    return a.due.getTime() - b.due.getTime() || b.duration - a.duration;
                 });
                 tasks.forEach(task => {
                     let durationIncrements = task.duration/15
