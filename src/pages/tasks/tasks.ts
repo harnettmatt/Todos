@@ -14,7 +14,7 @@ export interface Task {
     scheduledDate?: number;
     scheduledTime?: number;
     duration:       number;
-    priority:       number;
+    type:           string;
 }
 
 @IonicPage()

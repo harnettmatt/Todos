@@ -32,8 +32,11 @@
             </ion-select>
         </ion-item>
         <ion-item>
-            <ion-label>Priority: </ion-label>
-            <ion-input type="number" formControlName="priority"></ion-input>
+            <ion-label>Type: </ion-label>
+            <ion-select formControlName="type" interface="popover">
+                <ion-option value='work'>Work</ion-option>
+                <ion-option value='personal'>Personal</ion-option>
+            </ion-select>
         </ion-item>
         <button ion-button type="submit" block color="secondary" id="update-button">Update</button>
     </form>

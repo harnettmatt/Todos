@@ -25,7 +25,7 @@ export class EditTaskPage {
             description: [this.editTask.description],
             due: [this.editTask.due.toISOString().substring(0,10)],
             duration: [this.editTask.duration],
-            priority: [this.editTask.priority]
+            type: [this.editTask.type]
         });
         this.tasksCollection = this.afs.collection('tasks');
     }
@@ -68,7 +68,7 @@ export class EditTaskPage {
                 due: due,
                 duration: Number(this.editTaskForm.value['duration']),
                 name: this.editTaskForm.value['name'],
-                priority: this.editTaskForm.value['priority'],
+                type: this.editTaskForm.value['type'],
                 scheduledDate: scheduledDate,
                 scheduledTime: scheduledTime
             }
