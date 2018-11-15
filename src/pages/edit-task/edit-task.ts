@@ -61,6 +61,12 @@ export class EditTaskPage {
         if (permissionToUpdate) {
             let due = new Date(this.editTaskForm.value['due']);
             due.setHours(0,0,0,0);
+            let primaryColor = 'lightgreen'
+            let secondaryColor = 'green';
+            if (this.editTaskForm.value['type'] == 'work') {
+                primaryColor = 'lightblue';
+                secondaryColor = 'blue';
+            }
             this.editTask = {
                 id: this.editTaskID,
                 completed: this.editTask.completed,
@@ -70,7 +76,9 @@ export class EditTaskPage {
                 name: this.editTaskForm.value['name'],
                 type: this.editTaskForm.value['type'],
                 scheduledDate: scheduledDate,
-                scheduledTime: scheduledTime
+                scheduledTime: scheduledTime,
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor
             }
             let taskDoc = this.afs.doc<Task>('tasks/' + this.editTaskID);
             taskDoc.update(this.editTask);

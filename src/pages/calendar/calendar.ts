@@ -11,11 +11,12 @@ interface CalendarIncrement {
     timeLabel:      string;
     eventLabel:     string;
     time:           number;
-    borderColor:    string;
     cssClass:       string;
-    color:          string;
     task?:          Task;
     preference?:    Preference;
+    labelColor:     string;
+    incrementColor: string;
+    incrementBorderColor: string;
     type:           string;
 }
 
@@ -59,25 +60,26 @@ export class CalendarPage {
     buildCalendar() {
         this.calendar = [];
         for (let x=0; x<96; x++) {
-            let borderColor = 'white';
             let label = '';
             let cssClass = 'unscheduled';
+            let incrementBorderColor = 'white';
             let totalMins = x*15;
             let time = this.minsToMilitary(totalMins);
             if (totalMins % 60 == 0 && time != 0) {
                 label = this.minsToString(totalMins);
             }
             if (totalMins % 60 == 45) {
-                borderColor = 'black';
+                incrementBorderColor = 'black';
                 cssClass = 'unscheduled-time';
             }
             let increment = {
                 'timeLabel': label,
                 'eventLabel': '',
                 'time': time,
-                'borderColor': borderColor,
-                'color': 'white',
                 'cssClass': cssClass,
+                'labelColor': 'green',
+                'incrementColor': 'white',
+                'incrementBorderColor': incrementBorderColor,
                 'type': 'personal'
             }
             this.calendar.push(increment);
@@ -109,6 +111,8 @@ export class CalendarPage {
                         }
                         // middle increment for sleep (this is a one-off because the interval goes between days)
                         else if (preference.name == 'sleep' && ((preference.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= preference.from))) {
+                            increment.incrementColor = 'gray'
+                            increment.incrementBorderColor = 'gray';
                             this.setIncrementPreference(increment, preference, 'middle-increment-scheduled');
                         }
                         // middle increment
@@ -153,14 +157,11 @@ export class CalendarPage {
         for (let increment of this.calendar) {
             if (increment.task) {
                 if (increment.time % 60 == 45) {
-                    increment.borderColor = 'black';
                     increment.cssClass = 'unscheduled-time';
                 }
                 else {
                     increment.cssClass = 'unscheduled';
-                    increment.borderColor = 'white';
                 }
-                increment.color = 'white';
                 increment.eventLabel = '';
                 increment.task = null;
 
@@ -293,9 +294,9 @@ export class CalendarPage {
         let totalMins = this.militarytoMins(task.scheduledTime);
         let startingIncrementIndex = totalMins/15;
         if (task.duration == 15) {
-            this.calendar[startingIncrementIndex].color = '#D9F1FE';
-            this.calendar[startingIncrementIndex].borderColor = '#83d1fc';
             this.calendar[startingIncrementIndex].task = task;
+            this.calendar[startingIncrementIndex].incrementColor = task.primaryColor;
+            this.calendar[startingIncrementIndex].incrementBorderColor = task.secondaryColor;
             this.calendar[startingIncrementIndex].cssClass = 'top-bottom-increment-scheduled';
             this.calendar[startingIncrementIndex].eventLabel = task.name;
         }
@@ -313,9 +314,9 @@ export class CalendarPage {
                 else {
                     this.calendar[i].cssClass = 'middle-increment-scheduled';
                 }
-                this.calendar[i].color = '#D9F1FE';
-                this.calendar[i].borderColor = '#83d1fc';
                 this.calendar[i].task = task;
+                this.calendar[i].incrementColor = task.primaryColor;
+                this.calendar[i].incrementBorderColor = task.secondaryColor;
             }
         }
     }
@@ -337,11 +338,15 @@ export class CalendarPage {
     }
 
     setIncrementPreference(increment: CalendarIncrement, preference: Preference, cssClass: string) {
-        increment.cssClass = cssClass;
-        increment.borderColor = preference.color;
-        increment.color = preference.color;
-        increment.preference = preference;
+        // increment.cssClass = cssClass;
         increment.type = preference.name;
+        increment.preference = preference;
+        if (increment.preference.name == 'work') {
+            increment.labelColor = 'blue';
+        }
+        else {
+            increment.labelColor = 'gray';
+        }
     }
 
     previousDay() {

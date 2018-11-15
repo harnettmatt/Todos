@@ -10,8 +10,6 @@ export interface Preference {
     name:        string;
     from:        number;
     to:          number;
-    borderColor: string;
-    color:       string;
 }
 
 @IonicPage()

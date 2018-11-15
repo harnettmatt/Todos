@@ -21,7 +21,9 @@ export class NewTaskPage {
             description: [''],
             due: [''],
             duration: [''],
-            type: ['']
+            type: [''],
+            primaryColor: [''],
+            secondaryColor: ['']
         });
         this.tasksCollection = this.afs.collection('tasks');
     }
@@ -29,6 +31,13 @@ export class NewTaskPage {
     submitForm() {
         let due = new Date(this.newTaskForm.value['due']);
         due.setHours(0,0,0,0);
+        // determine colors:
+        let primaryColor = 'lightgreen'
+        let secondaryColor = 'green';
+        if (this.newTaskForm.value['type'] == 'work') {
+            primaryColor = 'lightblue';
+            secondaryColor = 'blue';
+        }
         this.newTask = {
             completed: false,
             description: this.newTaskForm.value['description'],
@@ -36,6 +45,8 @@ export class NewTaskPage {
             duration: Number(this.newTaskForm.value['duration']),
             name: this.newTaskForm.value['name'],
             type: this.newTaskForm.value['type'],
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
             scheduledDate: -1,
             scheduledTime: -1
         }

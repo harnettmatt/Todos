@@ -15,6 +15,8 @@ export interface Task {
     scheduledTime?: number;
     duration:       number;
     type:           string;
+    primaryColor:   string;
+    secondaryColor: string;
 }
 
 @IonicPage()

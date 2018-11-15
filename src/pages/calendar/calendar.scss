@@ -46,9 +46,13 @@ page-calendar {
         min-height: 26px;
     }
 
-    .label {
+    .time-label {
         width: 20%;
         top: -15px;
+    }
+    .color-label {
+        max-width: 10px;
+        margin-right: 3px;
     }
 
     .event-space {
