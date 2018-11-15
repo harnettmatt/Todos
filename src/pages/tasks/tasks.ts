@@ -9,7 +9,6 @@ export interface Task {
     id?:            string;
     completed:      boolean;
     name:           string;
-    description:    string;
     due:            Date;
     scheduledDate?: number;
     scheduledTime?: number;

@@ -18,7 +18,6 @@ export class NewTaskPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private afs: AngularFirestore) {
         this.newTaskForm = this.formBuilder.group({
             name: [''],
-            description: [''],
             due: [''],
             duration: [''],
             type: [''],
@@ -40,7 +39,6 @@ export class NewTaskPage {
         }
         this.newTask = {
             completed: false,
-            description: this.newTaskForm.value['description'],
             due: due,
             duration: Number(this.newTaskForm.value['duration']),
             name: this.newTaskForm.value['name'],

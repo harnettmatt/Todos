@@ -22,7 +22,6 @@ export class EditTaskPage {
         this.editTaskID = this.editTask.id;
         this.editTaskForm = this.formBuilder.group({
             name: [this.editTask.name],
-            description: [this.editTask.description],
             due: [this.editTask.due.toISOString().substring(0,10)],
             duration: [this.editTask.duration],
             type: [this.editTask.type]
@@ -70,7 +69,6 @@ export class EditTaskPage {
             this.editTask = {
                 id: this.editTaskID,
                 completed: this.editTask.completed,
-                description: this.editTaskForm.value['description'],
                 due: due,
                 duration: Number(this.editTaskForm.value['duration']),
                 name: this.editTaskForm.value['name'],
