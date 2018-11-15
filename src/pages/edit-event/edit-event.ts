@@ -22,7 +22,7 @@ export class EditEventPage {
         this.editEventForm = this.formBuilder.group({
             name: [this.editEvent.name],
             from: [this.editEvent.from],
-            to:   [this.editEvent.to],
+            to:   [this.editEvent.to]
         });
         this.eventsCollection = this.afs.collection('events');
     }
@@ -32,7 +32,8 @@ export class EditEventPage {
             id:   this.editEventID,
             name: this.editEventForm.value['name'],
             from: Number(this.editEventForm.value['from']),
-            to:   Number(this.editEventForm.value['to'])
+            to:   Number(this.editEventForm.value['to']),
+            common: this.editEvent.common
         }
         let taskDoc = this.afs.doc<Event>('events/' + this.editEventID);
         taskDoc.update(this.editEvent);

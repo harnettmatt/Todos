@@ -13,14 +13,14 @@
 <ion-content>
     <ion-list>
         <ion-item-divider color='light' class='divider'> Common Events </ion-item-divider>
-        <button ion-item *ngFor='let event of events | async' class='item-button' (click)="editEvent(event)">
+        <button ion-item *ngFor='let event of commonEvents | async' class='item-button' (click)="editEvent(event)">
             <ion-row class="top-row">
                 <ion-col> {{ event.name }} </ion-col>
                 <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
             </ion-row>
         </button>
         <ion-item-divider color='light' class='divider'> Custom Events </ion-item-divider>
-        <button ion-item *ngFor='let event of events | async' class='item-button' (click)="editEvent(event)">
+        <button ion-item *ngFor='let event of customEvents | async' class='item-button' (click)="editEvent(event)">
             <ion-row class="top-row">
                 <ion-col> {{ event.name }} </ion-col>
                 <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
