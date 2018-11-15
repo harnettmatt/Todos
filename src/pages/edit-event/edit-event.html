@@ -1,16 +1,16 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Edit Preference</ion-title>
+    <ion-title>Edit Event</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-    <form [formGroup]="editPreferenceForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="editEventForm" (ngSubmit)="submitForm()">
         <ion-item>
-            <ion-label>Preference Name: </ion-label>
+            <ion-label>Event Name: </ion-label>
             <ion-input type="text" formControlName="name"></ion-input>
         </ion-item>
         <ion-item>

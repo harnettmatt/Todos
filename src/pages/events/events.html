@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Events</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="addEvent()" class="nav-buttons"><ion-icon name="add"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-list>
+        <ion-item-divider color='light' class='divider'> Common Events </ion-item-divider>
+        <button ion-item *ngFor='let event of events | async' class='item-button' (click)="editEvent(event)">
+            <ion-row class="top-row">
+                <ion-col> {{ event.name }} </ion-col>
+                <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
+            </ion-row>
+        </button>
+        <ion-item-divider color='light' class='divider'> Custom Events </ion-item-divider>
+        <button ion-item *ngFor='let event of events | async' class='item-button' (click)="editEvent(event)">
+            <ion-row class="top-row">
+                <ion-col> {{ event.name }} </ion-col>
+                <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
+            </ion-row>
+        </button>
+    </ion-list>
+</ion-content>

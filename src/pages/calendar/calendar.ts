@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { Preference } from '../preferences/preferences';
+import { Event } from '../events/events';
 import { Task } from '../tasks/tasks';
 import { EditTaskPage } from '../edit-task/edit-task';
-import { EditPreferencePage } from '../edit-preference/edit-preference';
+import { EditEventPage } from '../edit-event/edit-event';
 
 interface CalendarIncrement {
     timeLabel:      string;
@@ -13,7 +13,7 @@ interface CalendarIncrement {
     time:           number;
     cssClass:       string;
     task?:          Task;
-    preference?:    Preference;
+    event?:    Event;
     labelColor:     string;
     incrementColor: string;
     incrementBorderColor: string;
@@ -29,9 +29,9 @@ export class CalendarPage {
 
     calendar: CalendarIncrement[];
     date: any;
-    preferencesCollection: AngularFirestoreCollection<Preference>;
-    preferencesSnapshot: Observable<Preference[]>;
-    preferencesSubscription: any;
+    eventsCollection: AngularFirestoreCollection<Event>;
+    eventsSnapshot: Observable<Event[]>;
+    eventsSubscription: any;
     tasksCollection: AngularFirestoreCollection<Task>;
     tasksSnapshot: Observable<Task[]>;
     tasksSubscription: any;
@@ -53,7 +53,7 @@ export class CalendarPage {
         let incrementIndex = totalMins/15;
 
         this.buildCalendar();
-        this.buildPreferences();
+        this.buildEvents();
         this.buildTasks();
     }
 
@@ -86,38 +86,38 @@ export class CalendarPage {
         }
     }
 
-    buildPreferences() {
-        this.preferencesCollection = this.afs.collection('preferences');
-        this.preferencesSnapshot = this.preferencesCollection.snapshotChanges().map(actions => {
+    buildEvents() {
+        this.eventsCollection = this.afs.collection('events');
+        this.eventsSnapshot = this.eventsCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
-                let preference = a.payload.doc.data() as Preference;
+                let event = a.payload.doc.data() as Event;
                 const id = a.payload.doc.id;
-                preference.id = id
-                return preference;
+                event.id = id
+                return event;
             });
         });
         let promise = new Promise((resolve, reject) => {
-            this.preferencesSubscription = this.preferencesSnapshot.subscribe(preferences => {
-                preferences.forEach(preference => {
+            this.eventsSubscription = this.eventsSnapshot.subscribe(events => {
+                events.forEach(event => {
                     for (let increment of this.calendar) {
                         // begining of the interval
-                        if (preference.from == increment.time) {
-                            this.setIncrementPreference(increment, preference, 'top-increment-scheduled');
+                        if (event.from == increment.time) {
+                            this.setIncrementEvent(increment, event, 'top-increment-scheduled');
                         }
                         // end of the interval
-                        else if (preference.to == increment.time) {
+                        else if (event.to == increment.time) {
                             let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-                            this.setIncrementPreference(this.calendar[previousIncrementIndex], preference, 'bottom-increment-scheduled');
+                            this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
                         }
                         // middle increment for sleep (this is a one-off because the interval goes between days)
-                        else if (preference.name == 'sleep' && ((preference.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= preference.from))) {
+                        else if (event.name == 'sleep' && ((event.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= event.from))) {
                             increment.incrementColor = 'gray'
                             increment.incrementBorderColor = 'gray';
-                            this.setIncrementPreference(increment, preference, 'middle-increment-scheduled');
+                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
                         }
                         // middle increment
-                        else if (preference.name != 'sleep' && preference.to > increment.time && increment.time >= preference.from) {
-                            this.setIncrementPreference(increment, preference, 'middle-increment-scheduled');
+                        else if (event.name != 'sleep' && event.to > increment.time && increment.time >= event.from) {
+                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
                         }
                     }
                 });
@@ -125,7 +125,7 @@ export class CalendarPage {
             });
         });
         promise.then(() => {
-            this.preferencesSubscription.unsubscribe();
+            this.eventsSubscription.unsubscribe();
         })
     }
 
@@ -171,7 +171,7 @@ export class CalendarPage {
 
     hardTaskSchedule() {
         this.buildCalendar();
-        this.buildPreferences();
+        this.buildEvents();
         // this block below is unscheduling the tasks for today
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
@@ -337,11 +337,11 @@ export class CalendarPage {
         return (hours * 60) + mins;
     }
 
-    setIncrementPreference(increment: CalendarIncrement, preference: Preference, cssClass: string) {
+    setIncrementEvent(increment: CalendarIncrement, event: Event, cssClass: string) {
         // increment.cssClass = cssClass;
-        increment.type = preference.name;
-        increment.preference = preference;
-        if (increment.preference.name == 'work') {
+        increment.type = event.name;
+        increment.event = event;
+        if (increment.event.name == 'work') {
             increment.labelColor = 'blue';
         }
         else {
@@ -363,8 +363,8 @@ export class CalendarPage {
         if (increment.task) {
             this.navCtrl.push(EditTaskPage, { data: increment.task });
         }
-        else if (increment.preference) {
-            this.navCtrl.push(EditPreferencePage, { preference: increment.preference })
+        else if (increment.event) {
+            this.navCtrl.push(EditEventPage, { event: increment.event })
         }
     }
 }
