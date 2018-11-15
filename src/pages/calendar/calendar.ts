@@ -77,7 +77,8 @@ export class CalendarPage {
                 'time': time,
                 'borderColor': borderColor,
                 'color': 'white',
-                'cssClass': cssClass
+                'cssClass': cssClass,
+                'type': 'personal'
             }
             this.calendar.push(increment);
         }
@@ -97,7 +98,6 @@ export class CalendarPage {
             this.preferencesSubscription = this.preferencesSnapshot.subscribe(preferences => {
                 preferences.forEach(preference => {
                     for (let increment of this.calendar) {
-                        increment.type = 'personal';
                         // begining of the interval
                         if (preference.from == increment.time) {
                             this.setIncrementPreference(increment, preference, 'top-increment-scheduled');
@@ -169,7 +169,8 @@ export class CalendarPage {
     }
 
     hardTaskSchedule() {
-        this.clearCalendarTasks();
+        this.buildCalendar();
+        this.buildPreferences();
         // this block below is unscheduling the tasks for today
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
         this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
@@ -292,8 +293,8 @@ export class CalendarPage {
         let totalMins = this.militarytoMins(task.scheduledTime);
         let startingIncrementIndex = totalMins/15;
         if (task.duration == 15) {
-            this.calendar[startingIncrementIndex].color = 'lightgreen';
-            this.calendar[startingIncrementIndex].borderColor = 'green';
+            this.calendar[startingIncrementIndex].color = '#D9F1FE';
+            this.calendar[startingIncrementIndex].borderColor = '#83d1fc';
             this.calendar[startingIncrementIndex].task = task;
             this.calendar[startingIncrementIndex].cssClass = 'top-bottom-increment-scheduled';
             this.calendar[startingIncrementIndex].eventLabel = task.name;
