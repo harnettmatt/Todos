@@ -1,12 +1,29 @@
 page-preferences {
 
+    .nav-buttons {
+        font-size: 25px;
+    }
+
+    .divider {
+        padding-left: 16px;
+    }
+
     .item-button {
         padding-left: 0px;
     }
 
-    .item-inner {
-        padding-left: 8px;
-        padding-right: 8px;
+    .top-row {
+        padding-left: 11px;
+    }
+
+    .right-col {
+        text-align: right
+    }
+
+    .bottom-row {
+        padding-left: 11px;
+        color: gray;
+        font-size: 12px;
     }
 
     .right-col {
