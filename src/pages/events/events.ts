@@ -3,14 +3,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { EditEventPage } from '../edit-event/edit-event';
-
+import { NewEventPage } from '../new-event/new-event'
 
 export interface Event {
-    id:          string;
+    id?:          string;
     name:        string;
     from:        number;
     to:          number;
     common:      boolean;
+    days:        string[];
 }
 
 @IonicPage()
@@ -81,6 +82,9 @@ export class EventsPage {
         return customEventsPromise;
     }
 
+    addEvent() {
+        this.navCtrl.push(NewEventPage);
+    }
 
     editEvent(event) {
         this.navCtrl.push(EditEventPage, { event: event });
