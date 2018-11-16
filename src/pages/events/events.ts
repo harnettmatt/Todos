@@ -20,31 +20,67 @@ export interface Event {
 })
 export class EventsPage {
 
+    isDataAvailable: boolean = false;
     commonEventsCollection: AngularFirestoreCollection<Event>;
-    commonEvents: Observable<Event[]>;
+    commonEventsSnapshot: Observable<Event[]>;
+    sortedCommonEvents: Event[];
+    commonEventsSubscription: any;
     customEventsCollection: AngularFirestoreCollection<Event>;
-    customEvents: Observable<Event[]>;
+    customEventsSnapshot: Observable<Event[]>;
+    sortedCustomEvents: Event[];
+    customEventsSubscription: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
-        this.commonEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', true));
-        this.commonEvents = this.commonEventsCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const event = a.payload.doc.data() as Event;
-                const id = a.payload.doc.id;
-                event.id = id;
-                return event;
-            });
-        });
-        this.customEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', false));
-        this.customEvents = this.customEventsCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const event = a.payload.doc.data() as Event;
-                const id = a.payload.doc.id;
-                event.id = id;
-                return event;
-            });
+    }
+
+    ngOnInit() {
+        let commonEventsPromise = this.fetchCommonEvents();
+        let customEventsPromise = this.fetchCustomEvents();
+        Promise.all([commonEventsPromise, customEventsPromise]).then(() => {
+            this.isDataAvailable = true;
         });
     }
+
+    fetchCommonEvents() {
+        this.commonEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', true));
+        this.commonEventsSnapshot = this.commonEventsCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const event = a.payload.doc.data() as Event;
+                const id = a.payload.doc.id;
+                event.id = id;
+                return event;
+            });
+        });
+        let commonEventsPromise = new Promise((resolve, reject) => {
+            this.commonEventsSubscription = this.commonEventsSnapshot.subscribe(events => {
+                events.sort(function (a, b) { return a.from - b.from });
+                this.sortedCommonEvents = events;
+                resolve();
+            });
+        });
+        return commonEventsPromise;
+    }
+
+    fetchCustomEvents() {
+        this.customEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', false));
+        this.customEventsSnapshot = this.customEventsCollection.snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const event = a.payload.doc.data() as Event;
+                const id = a.payload.doc.id;
+                event.id = id;
+                return event;
+            });
+        });
+        let customEventsPromise = new Promise((resolve, reject) => {
+            this.customEventsSubscription = this.customEventsSnapshot.subscribe(events => {
+                events.sort(function (a, b) { return a.to - b.to });
+                this.sortedCustomEvents = events;
+                resolve();
+            });
+        });
+        return customEventsPromise;
+    }
+
 
     editEvent(event) {
         this.navCtrl.push(EditEventPage, { event: event });
