@@ -23,13 +23,13 @@ export class NewEventPage {
             from: [''],
             to: [''],
             common: [''],
-            sunday: ['false'],
-            monday: ['false'],
-            tuesday: ['false'],
-            wednesday: ['false'],
-            thursday: ['false'],
-            friday: ['false'],
-            saturday: ['false']
+            sunday: [false],
+            monday: [false],
+            tuesday: [false],
+            wednesday: [false],
+            thursday: [false],
+            friday: [false],
+            saturday: [false]
         });
         this.eventsCollection = this.afs.collection('events');
     }
