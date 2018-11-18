@@ -91,7 +91,6 @@ export class EventsPage {
     }
 
     deleteEvent(event) {
-        console.log(event);
         let eventDoc = this.afs.doc<Event>('events/' + event.id);
         eventDoc.delete();
     }

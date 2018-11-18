@@ -18,7 +18,6 @@ export class EditEventPage {
     days: any;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private afs: AngularFirestore) {
-
         this.editEvent = this.navParams.get('event');
         this.editEventID = this.editEvent.id;
         this.editEventForm = this.formBuilder.group({

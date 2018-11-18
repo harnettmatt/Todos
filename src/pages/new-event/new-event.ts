@@ -56,8 +56,4 @@ export class NewEventPage {
         this.eventsCollection.add(this.newEvent);
         this.navCtrl.pop();
     }
-
-    updateDays() {
-        console.log(this.days);
-    }
 }
