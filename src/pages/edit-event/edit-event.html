@@ -21,7 +21,37 @@
             <ion-label>To: </ion-label>
             <ion-input type="text" formControlName="to"></ion-input>
         </ion-item>
+        <ion-item>
+            <ion-label class='checkboxes-label'> Days: </ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label> Sunday </ion-label>
+            <ion-checkbox item-left formControlName='sunday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Monday </ion-label>
+            <ion-checkbox item-left formControlName='monday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Tuesday </ion-label>
+            <ion-checkbox item-left formControlName='tuesday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Wednesday </ion-label>
+            <ion-checkbox item-left formControlName='wednesday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Thursday </ion-label>
+            <ion-checkbox item-left formControlName='thursday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Friday </ion-label>
+            <ion-checkbox item-left formControlName='friday' class='checkbox'></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label> Saturday </ion-label>
+            <ion-checkbox item-left formControlName='saturday' [checked]='false'class='checkbox'></ion-checkbox>
+        </ion-item>
         <button ion-button type="submit" block color="secondary" id="update-button">Update</button>
     </form>
-
 </ion-content>

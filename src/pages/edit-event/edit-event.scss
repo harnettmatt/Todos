@@ -1,9 +1,17 @@
 page-edit-event {
-    
+
     #update-button {
         width: 50%;
         margin-left: 25%;
         margin-right: 25%;
+    }
+
+    .checkboxes-label {
+        color: #999;
+    }
+
+    .item.item-md .checkbox-md {
+        margin: 9px 9px 9px 36px
     }
 
 }
