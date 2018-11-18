@@ -1,9 +1,27 @@
 page-new-event {
 
-    #update-button {
+    #submit-button {
         width: 50%;
+        margin-top: 15px;
         margin-left: 25%;
         margin-right: 25%;
+    }
+    .col {
+        padding:0px;
+    }
+
+    .checkboxes-label {
+        color: #999;
+    }
+
+    .item.item-md .checkbox-md {
+        margin: 9px 9px 9px 36px
+    }
+
+    .button-md {
+        box-shadow: 0px;
+        // padding: 0px;
+        margin: 0px;
     }
 
 }

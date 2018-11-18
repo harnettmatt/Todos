@@ -20,10 +20,10 @@
             </ion-row>
         </button>
         <ion-item-divider color='light' class='divider'> Custom Events </ion-item-divider>
-        <button ion-item *ngFor='let event of customEvents | async' class='item-button' (click)="editEvent(event)">
+        <button ion-item *ngFor='let customEvent of sortedCustomEvents' class='item-button' (click)="editEvent(customEvent)">
             <ion-row class="top-row">
-                <ion-col> {{ event.name }} </ion-col>
-                <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
+                <ion-col> {{ customEvent.name }} </ion-col>
+                <ion-col class="right-col">  {{ customEvent.from }} - {{ customEvent.to }}  </ion-col>
             </ion-row>
         </button>
     </ion-list>
