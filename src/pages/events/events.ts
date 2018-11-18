@@ -6,7 +6,7 @@ import { EditEventPage } from '../edit-event/edit-event';
 import { NewEventPage } from '../new-event/new-event'
 
 export interface Event {
-    id?:          string;
+    id?:         string;
     name:        string;
     from:        number;
     to:          number;
@@ -88,6 +88,12 @@ export class EventsPage {
 
     editEvent(event) {
         this.navCtrl.push(EditEventPage, { event: event });
+    }
+
+    deleteEvent(event) {
+        console.log(event);
+        let eventDoc = this.afs.doc<Event>('events/' + event.id);
+        eventDoc.delete();
     }
 
 }
