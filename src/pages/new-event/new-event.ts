@@ -34,13 +34,6 @@ export class NewEventPage {
         this.eventsCollection = this.afs.collection('events');
     }
 
-    buildDays() {
-        let arr = this.days.map(day => {
-            return this.formBuilder.control(day.selected);
-        });
-        return this.formBuilder.array(arr);
-    }
-
     submitForm() {
         this.days = {
             sunday: this.newEventForm.value['sunday'],
