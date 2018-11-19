@@ -12,6 +12,7 @@ export interface Event {
     to:          number;
     common:      boolean;
     days:        string[];
+    disable:      boolean;
 }
 
 @IonicPage()

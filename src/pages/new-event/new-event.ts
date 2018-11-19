@@ -50,6 +50,7 @@ export class NewEventPage {
             from: this.newEventForm.value['from'],
             to: this.newEventForm.value['to'],
             common: false,
+            disable: false,
             days: this.days
         }
 

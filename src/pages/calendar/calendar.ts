@@ -200,8 +200,8 @@ export class CalendarPage {
             for (let task of updateTasks) {
                 let taskDoc = this.afs.doc<Task>('tasks/' + task.id);
                 updatePromises.push(taskDoc.update(task));
-                console.log('updating task' + task.name + " " + task.scheduledDate);
             }
+
             Promise.all(updatePromises).then(() => {
                 this.scheduleTasks();
             });
@@ -256,7 +256,6 @@ export class CalendarPage {
                 });
                 resolve();
             });
-
         });
 
         promise.then(() => {
@@ -307,7 +306,6 @@ export class CalendarPage {
                     this.calendar[i].cssClass = 'top-increment-scheduled';
                     this.calendar[i].eventLabel = task.name;
                 }
-
                 else if (i + 1 == endingIncrementIndex) {
                     this.calendar[i].cssClass = 'bottom-increment-scheduled';
                 }

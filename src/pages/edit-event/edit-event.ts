@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Event } from '../events/events';
+import { Event, EventsPage } from '../events/events';
 
 @IonicPage()
 @Component({
@@ -16,10 +16,15 @@ export class EditEventPage {
     editEventID: string;
     eventsCollection: AngularFirestoreCollection<Event>;
     days: any;
+    disableButtonText: string;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private afs: AngularFirestore) {
         this.editEvent = this.navParams.get('event');
         this.editEventID = this.editEvent.id;
+        this.disableButtonText = 'Delete Event';
+        if (this.editEvent.common) {
+            this.disableButtonText = 'Disable Event';
+        }
         this.editEventForm = this.formBuilder.group({
             name: [this.editEvent.name],
             from: [this.editEvent.from],
@@ -51,11 +56,23 @@ export class EditEventPage {
             from: Number(this.editEventForm.value['from']),
             to:   Number(this.editEventForm.value['to']),
             common: this.editEvent.common,
+            disable: this.editEvent.disable,
             days: this.days
         }
-        let taskDoc = this.afs.doc<Event>('events/' + this.editEventID);
-        taskDoc.update(this.editEvent);
+        let eventDoc = this.afs.doc<Event>('events/' + this.editEventID);
+        eventDoc.update(this.editEvent);
         this.navCtrl.pop();
     }
 
+    disableEvent() {
+        let eventDoc = this.afs.doc<Event>('events/' + this.editEventID);
+        if (this.editEvent.common) {
+            this.editEvent.disable = true;
+            eventDoc.update(this.editEvent);
+        }
+        else {
+            eventDoc.delete();
+        }
+        this.navCtrl.pop();
+    }
 }

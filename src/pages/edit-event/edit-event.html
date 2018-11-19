@@ -52,6 +52,11 @@
             <ion-label> Saturday </ion-label>
             <ion-checkbox item-left formControlName='saturday' [checked]='false'class='checkbox'></ion-checkbox>
         </ion-item>
-        <button ion-button type="submit" block color="secondary" id="update-button">Update</button>
+        <ion-grid>
+            <ion-row>
+                <ion-col><button ion-button type="submit" block color="secondary" id="update-button">Update Event</button></ion-col>
+                <ion-col><button ion-button type="button" block color="danger" id="disable-button" (click)="disableEvent()"> {{ disableButtonText }}</button></ion-col>
+            </ion-row>
+        </ion-grid>
     </form>
 </ion-content>
