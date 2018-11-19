@@ -34,6 +34,11 @@
                 <ion-option value='personal'>Personal</ion-option>
             </ion-select>
         </ion-item>
-        <button ion-button type="submit" block color="secondary" id="update-button">Update</button>
+        <ion-grid>
+            <ion-row>
+                <ion-col><button ion-button type="submit" block color="secondary">Update Task</button></ion-col>
+                <ion-col><button ion-button type="button" block color="danger" (click)="deleteTask()">Delete Task</button></ion-col>
+            </ion-row>
+        </ion-grid>
     </form>
 </ion-content>

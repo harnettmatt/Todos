@@ -84,4 +84,10 @@ export class EditTaskPage {
         }
     }
 
+    deleteTask() {
+        let taskDoc = this.afs.doc<Task>('tasks/' + this.editTaskID);
+        taskDoc.delete();
+        this.navCtrl.pop();
+    }
+
   }
