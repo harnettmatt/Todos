@@ -75,7 +75,7 @@ export class EventsPage {
         });
         let customEventsPromise = new Promise((resolve, reject) => {
             this.customEventsSubscription = this.customEventsSnapshot.subscribe(events => {
-                events.sort(function (a, b) { return a.to - b.to });
+                events.sort(function (a, b) { return a.from - b.from });
                 this.sortedCustomEvents = events;
                 resolve();
             });
