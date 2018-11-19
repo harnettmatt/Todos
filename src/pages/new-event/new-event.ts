@@ -49,6 +49,8 @@ export class NewEventPage {
             name: this.newEventForm.value['name'],
             from: this.newEventForm.value['from'],
             to: this.newEventForm.value['to'],
+            primaryColor: 'lightgray',
+            secondaryColor: 'gray',
             common: false,
             disable: false,
             days: this.days

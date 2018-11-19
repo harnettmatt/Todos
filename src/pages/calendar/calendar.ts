@@ -9,7 +9,7 @@ import { EditEventPage } from '../edit-event/edit-event';
 
 interface CalendarIncrement {
     timeLabel:      string;
-    eventLabel:     string;
+    label:          string;
     time:           number;
     cssClass:       string;
     task?:          Task;
@@ -74,7 +74,7 @@ export class CalendarPage {
             }
             let increment = {
                 'timeLabel': label,
-                'eventLabel': '',
+                'label': '',
                 'time': time,
                 'cssClass': cssClass,
                 'labelColor': 'green',
@@ -87,7 +87,9 @@ export class CalendarPage {
     }
 
     buildEvents() {
-        this.eventsCollection = this.afs.collection('events');
+        let dayList = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        let whereClause = 'days.' + dayList[this.date.getDay()];
+        this.eventsCollection = this.afs.collection('events', ref => ref.where(whereClause, '==', true));
         this.eventsSnapshot = this.eventsCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let event = a.payload.doc.data() as Event;
@@ -102,6 +104,7 @@ export class CalendarPage {
                     for (let increment of this.calendar) {
                         // begining of the interval
                         if (event.from == increment.time) {
+                            increment.label = event.name;
                             this.setIncrementEvent(increment, event, 'top-increment-scheduled');
                         }
                         // end of the interval
@@ -110,10 +113,13 @@ export class CalendarPage {
                             this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
                         }
                         // middle increment for sleep (this is a one-off because the interval goes between days)
-                        else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time >= 0) || (2400 >= increment.time && increment.time >= event.from))) {
-                            increment.incrementColor = 'gray'
-                            increment.incrementBorderColor = 'gray';
+                        else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time > 0) || (2400 >= increment.time && increment.time >= event.from))) {
                             this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
+                        }
+                        // case where sleep overlaps onto the 'next day'
+                        else if (event.name == 'Sleep' && increment.time == 0) {
+                            increment.label = event.name;
+                            this.setIncrementEvent(increment, event, 'top-increment-scheduled')
                         }
                         // middle increment
                         else if (event.name != 'Sleep' && event.to > increment.time && increment.time >= event.from) {
@@ -162,7 +168,7 @@ export class CalendarPage {
                 else {
                     increment.cssClass = 'unscheduled';
                 }
-                increment.eventLabel = '';
+                increment.label = '';
                 increment.task = null;
 
             }
@@ -297,14 +303,14 @@ export class CalendarPage {
             this.calendar[startingIncrementIndex].incrementColor = task.primaryColor;
             this.calendar[startingIncrementIndex].incrementBorderColor = task.secondaryColor;
             this.calendar[startingIncrementIndex].cssClass = 'top-bottom-increment-scheduled';
-            this.calendar[startingIncrementIndex].eventLabel = task.name;
+            this.calendar[startingIncrementIndex].label = task.name;
         }
         else {
             let endingIncrementIndex = startingIncrementIndex + (task.duration/15);
             for (let i=startingIncrementIndex; i<endingIncrementIndex; i++) {
                 if (i == startingIncrementIndex) {
                     this.calendar[i].cssClass = 'top-increment-scheduled';
-                    this.calendar[i].eventLabel = task.name;
+                    this.calendar[i].label = task.name;
                 }
                 else if (i + 1 == endingIncrementIndex) {
                     this.calendar[i].cssClass = 'bottom-increment-scheduled';
@@ -336,15 +342,12 @@ export class CalendarPage {
     }
 
     setIncrementEvent(increment: CalendarIncrement, event: Event, cssClass: string) {
-        // increment.cssClass = cssClass;
+        increment.cssClass = cssClass;
         increment.type = event.name;
         increment.event = event;
-        if (increment.event.name == 'Work') {
-            increment.labelColor = 'blue';
-        }
-        else {
-            increment.labelColor = 'gray';
-        }
+        increment.labelColor = event.secondaryColor;
+        increment.incrementColor = event.primaryColor;
+        increment.incrementBorderColor = event.secondaryColor;
     }
 
     previousDay() {

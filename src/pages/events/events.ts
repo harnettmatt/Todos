@@ -6,13 +6,15 @@ import { EditEventPage } from '../edit-event/edit-event';
 import { NewEventPage } from '../new-event/new-event'
 
 export interface Event {
-    id?:         string;
-    name:        string;
-    from:        number;
-    to:          number;
-    common:      boolean;
-    days:        string[];
-    disable:      boolean;
+    id?:            string;
+    name:           string;
+    from:           number;
+    to:             number;
+    common:         boolean;
+    primaryColor:   string;
+    secondaryColor: string;
+    days:           string[];
+    disable:        boolean;
 }
 
 @IonicPage()
