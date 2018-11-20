@@ -102,28 +102,34 @@ export class CalendarPage {
             this.eventsSubscription = this.eventsSnapshot.subscribe(events => {
                 events.forEach(event => {
                     for (let increment of this.calendar) {
-                        // begining of the interval
-                        if (event.from == increment.time) {
-                            increment.label = event.name;
-                            this.setIncrementEvent(increment, event, 'top-increment-scheduled');
+                        // special case to set the increment.labelColor but not create an event space for Work
+                        if (event.name == 'Work' && increment.time <= event.to && increment.time >= event.from) {
+                            increment.labelColor = event.secondaryColor;
                         }
-                        // end of the interval
-                        else if (event.to == increment.time) {
-                            let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-                            this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
-                        }
-                        // middle increment for sleep (this is a one-off because the interval goes between days)
-                        else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time > 0) || (2400 >= increment.time && increment.time >= event.from))) {
-                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
-                        }
-                        // case where sleep overlaps onto the 'next day'
-                        else if (event.name == 'Sleep' && increment.time == 0) {
-                            increment.label = event.name;
-                            this.setIncrementEvent(increment, event, 'top-increment-scheduled')
-                        }
-                        // middle increment
-                        else if (event.name != 'Sleep' && event.to > increment.time && increment.time >= event.from) {
-                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
+                        else {
+                            // begining of the interval
+                            if (event.from == increment.time) {
+                                increment.label = event.name;
+                                this.setIncrementEvent(increment, event, 'top-increment-scheduled');
+                            }
+                            // end of the interval
+                            else if (event.to == increment.time) {
+                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
+                                this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
+                            }
+                            // middle increment for sleep (this is a one-off because the interval goes between days)
+                            else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time > 0) || (2400 >= increment.time && increment.time >= event.from))) {
+                                this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
+                            }
+                            // case where sleep overlaps onto the 'next day'
+                            else if (event.name == 'Sleep' && increment.time == 0) {
+                                increment.label = event.name;
+                                this.setIncrementEvent(increment, event, 'top-increment-scheduled')
+                            }
+                            // middle increment
+                            else if (event.name != 'Sleep' && event.to > increment.time && increment.time >= event.from) {
+                                this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
+                            }
                         }
                     }
                 });
