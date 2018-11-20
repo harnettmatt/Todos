@@ -13,7 +13,7 @@ export interface Event {
     common:         boolean;
     primaryColor:   string;
     secondaryColor: string;
-    days:           string[];
+    days:           any;
     disable:        boolean;
 }
 
