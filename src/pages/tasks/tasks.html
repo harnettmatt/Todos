@@ -35,11 +35,15 @@
             <button ion-item class='sliding-item-button' (click)="editTask(task)">
                 <ion-row class="top-row">
                     <ion-col> {{ task.name }} </ion-col>
-                    <ion-col class="right-col">  {{ task.duration }} mins </ion-col>
+                    <ion-col class="right-col"> {{ task.duration }} mins </ion-col>
                 </ion-row>
                 <ion-row class="bottom-row">
                     <ion-col> {{ task.type }} </ion-col>
-                    <ion-col class="right-col"> {{ task.scheduledDate | date: 'EEE, MMM d' }} - {{ task.scheduledTime }}</ion-col>
+                    <ion-col class="right-col"><b> Scheduled: </b> {{ task.scheduledDate | date: 'EEE, MMM d' }} - {{ task.scheduledTime }}</ion-col>
+                </ion-row>
+                <ion-row class="bottom-row">
+                    <ion-col></ion-col>
+                    <ion-col class="right-col"><b> Due: </b>{{ task.due | date: 'EEE, MMM d' }} </ion-col>
                 </ion-row>
             </button>
             <ion-item-options side="left">
