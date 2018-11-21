@@ -105,6 +105,8 @@ export class CalendarPage {
                         // special case to set the increment.labelColor but not create an event space for Work
                         if (event.name == 'Work' && increment.time <= event.to && increment.time >= event.from) {
                             increment.labelColor = event.secondaryColor;
+                            increment.type = event.name;
+                            increment.event = event;
                         }
                         else {
                             // begining of the interval
@@ -246,25 +248,28 @@ export class CalendarPage {
                     let endingIncrementIndex = 0;
                     // finding a free set of increments for the task
                     for (let increment of this.calendar) {
+                        // determine the start of the counter
                         if (!increment.task && increment.type == task.type) {
                             if (incrementCounter == 0) {
                                 startingIncrementIndex = this.calendar.indexOf(increment);
                             }
                             incrementCounter++;
                         }
+                        // ensure that the counter is incrementing without overlapping with invalid events or other tasks.
                         else if ((increment.task || increment.type != task.type) && incrementCounter < durationIncrements) {
                             incrementCounter = 0;
                         }
-                        if (incrementCounter >= durationIncrements) {
+                        // now check if the counter is the size of the duration
+                        if (incrementCounter == durationIncrements) {
                             endingIncrementIndex = startingIncrementIndex + durationIncrements;
+                            let totalMins = startingIncrementIndex * 15;
+                            task.scheduledTime = this.minsToMilitary(totalMins);
+                            this.addTaskToCalendar(task);
+                            task.scheduledDate = this.date;
+                            updateTasks.push(task);
                             break;
                         }
                     }
-                    let totalMins = startingIncrementIndex * 15;
-                    task.scheduledTime = this.minsToMilitary(totalMins);
-                    this.addTaskToCalendar(task);
-                    task.scheduledDate = this.date;
-                    updateTasks.push(task);
                 });
                 resolve();
             });
