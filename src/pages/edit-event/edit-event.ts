@@ -57,7 +57,9 @@ export class EditEventPage {
             to:   Number(this.editEventForm.value['to']),
             common: this.editEvent.common,
             disable: this.editEvent.disable,
-            days: this.days
+            days: this.days,
+            primaryColor: this.editEvent.primaryColor,
+            secondaryColor: this.editEvent.secondaryColor
         }
         let eventDoc = this.afs.doc<Event>('events/' + this.editEventID);
         eventDoc.update(this.editEvent);
