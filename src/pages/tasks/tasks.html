@@ -38,8 +38,8 @@
                     <ion-col class="right-col">  {{ task.duration }} mins </ion-col>
                 </ion-row>
                 <ion-row class="bottom-row">
-                    <ion-col> project </ion-col>
-                    <ion-col class="right-col"> {{ task.due | date: 'EEE, MMM d h:mm a' }} </ion-col>
+                    <ion-col> {{ task.type }} </ion-col>
+                    <ion-col class="right-col"> {{ task.scheduledDate | date: 'EEE, MMM d' }} - {{ task.scheduledTime }}</ion-col>
                 </ion-row>
             </button>
             <ion-item-options side="left">
