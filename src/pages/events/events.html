@@ -16,7 +16,7 @@
         <button ion-item *ngFor='let event of sortedCommonEvents' class='item-button' (click)="editEvent(event)">
             <ion-row class="top-row">
                 <ion-col> {{ event.name }} </ion-col>
-                <ion-col class="right-col">  {{ event.from }} - {{ event.to }}  </ion-col>
+                <ion-col class="right-col">  {{ event.from | militaryToAmPm }} - {{ event.to | militaryToAmPm }}  </ion-col>
             </ion-row>
         </button>
         <ion-item-divider color='light' class='divider'> Custom Events </ion-item-divider>
@@ -24,7 +24,7 @@
             <button ion-item class='item-button' (click)="editEvent(customEvent)">
                 <ion-row class="top-row">
                     <ion-col> {{ customEvent.name }} </ion-col>
-                    <ion-col class="right-col">  {{ customEvent.from }} - {{ customEvent.to }}  </ion-col>
+                    <ion-col class="right-col">  {{ customEvent.from | militaryToAmPm }} - {{ customEvent.to | militaryToAmPm }}  </ion-col>
                 </ion-row>
             </button>
             <ion-item-options side="right">

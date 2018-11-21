@@ -12,12 +12,15 @@ import { EventsPage } from '../pages/events/events';
 import { EditEventPage } from '../pages/edit-event/edit-event';
 import { NewEventPage } from '../pages/new-event/new-event';
 
+import { MilitaryToAmPmPipe } from '../pipes/military-to-am-pm/military-to-am-pm';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HttpModule } from '@angular/http';
 import { AngularFirestoreModule} from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCv0vHOydYpvBiIRcxV8pqeOkD5VP6vfgo",
@@ -38,7 +41,8 @@ const firebaseConfig = {
     EditTaskPage,
     EventsPage,
     EditEventPage,
-    NewEventPage
+    NewEventPage,
+    MilitaryToAmPmPipe
   ],
   imports: [
     BrowserModule,

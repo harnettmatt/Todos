@@ -39,7 +39,7 @@
                 </ion-row>
                 <ion-row class="bottom-row">
                     <ion-col> {{ task.type }} </ion-col>
-                    <ion-col class="right-col"><b> Scheduled: </b> {{ task.scheduledDate | date: 'EEE, MMM d' }} - {{ task.scheduledTime }}</ion-col>
+                    <ion-col class="right-col"><b> Scheduled: </b> {{ task.scheduledDate | date: 'EEE, MMM d' }} - {{ task.scheduledTime | militaryToAmPm }}</ion-col>
                 </ion-row>
                 <ion-row class="bottom-row">
                     <ion-col></ion-col>
