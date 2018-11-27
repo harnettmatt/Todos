@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Observable } from 'rxjs/Observable';
 import { NewTaskPage } from '../new-task/new-task';
 import { EditTaskPage } from '../edit-task/edit-task';
+import { FirestoreProvider } from '../../providers/firestore/firestore';
 
 export interface Task {
     id?:            string;
@@ -33,36 +34,19 @@ export class TasksPage {
     completedTasks: Observable<Task[]>;
     date: Date;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore, private firestoreProvider: FirestoreProvider) {
         this.date = new Date();
         this.date.setHours(0,0,0,0);
+
         this.overdueTasksCollection = afs.collection('tasks', ref => ref.where('due', '<', this.date).where('completed', '==', false));
-        this.overdueTasks = this.overdueTasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id;
-                return task;
-            });
-        });
+        this.overdueTasks = firestoreProvider.getTaskSnapshotChanges(this.overdueTasksCollection);
+
         this.tasksCollection = afs.collection('tasks', ref => ref.where('due', '>=', this.date).where('completed', '==', false));
-        this.tasks = this.tasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id;
-                return task;
-            });
-        });
+        this.tasks = firestoreProvider.getTaskSnapshotChanges(this.tasksCollection);
+
         this.completedTasksCollection = afs.collection('tasks', ref => ref.where('completed', '==', true));
-        this.completedTasks = this.completedTasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id;
-                return task;
-            });
-        });
+        this.completedTasks = firestoreProvider.getTaskSnapshotChanges(this.completedTasksCollection);
+
     }
 
     addTask() {
