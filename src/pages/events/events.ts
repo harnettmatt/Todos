@@ -48,7 +48,7 @@ export class EventsPage {
 
     fetchCommonEvents() {
         this.commonEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', true));
-        this.commonEventsSnapshot = firestoreProvider.getEventSnapshotChanges(this.commonEventsCollection);
+        this.commonEventsSnapshot = this.firestoreProvider.getEventSnapshotChanges(this.commonEventsCollection);
         let commonEventsPromise = new Promise((resolve, reject) => {
             this.commonEventsSubscription = this.commonEventsSnapshot.subscribe(events => {
                 events.sort(function (a, b) { return a.from - b.from });
@@ -61,7 +61,7 @@ export class EventsPage {
 
     fetchCustomEvents() {
         this.customEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', false));
-        this.customEventsSnapshot = firestoreProvider.getEventSnapshotChanges(this.customEventsCollection);
+        this.customEventsSnapshot = this.firestoreProvider.getEventSnapshotChanges(this.customEventsCollection);
         let customEventsPromise = new Promise((resolve, reject) => {
             this.customEventsSubscription = this.customEventsSnapshot.subscribe(events => {
                 events.sort(function (a, b) { return a.from - b.from });

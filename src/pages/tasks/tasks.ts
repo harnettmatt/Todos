@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { NewTaskPage } from '../new-task/new-task';
 import { EditTaskPage } from '../edit-task/edit-task';
 import { FirestoreProvider } from '../../providers/firestore/firestore';
 

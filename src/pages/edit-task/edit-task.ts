@@ -55,15 +55,13 @@ export class EditTaskPage {
 
     submitForm() {
         let permissionToUpdate = true;
+        let scheduledDate = -1;
+        let scheduledTime = -1;
+        let completed = false;
         if (this.editTask) {
-            let scheduledDate = this.task.scheduledDate;
-            let scheduledTime = this.task.scheduledTime;
-            let completed = this.task.completed;
-        }
-        else {
-            let scheduledDate = -1;
-            let scheduledTime = -1;
-            let completed = false;
+            scheduledDate = this.task.scheduledDate;
+            scheduledTime = this.task.scheduledTime;
+            completed = this.task.completed;
         }
         // if the task duration is being changed and the task has already been scheduled
         if (this.editTask && Number(this.taskForm.value['duration']) != this.task.duration && this.task.scheduledDate > -1) {
@@ -102,9 +100,9 @@ export class EditTaskPage {
             this.task = {
                 completed: completed,
                 due: due,
-                duration: Number(this.task.value['duration']),
-                name: this.task.value['name'],
-                type: this.task.value['type'],
+                duration: Number(this.taskForm.value['duration']),
+                name: this.taskForm.value['name'],
+                type: this.taskForm.value['type'],
                 scheduledDate: scheduledDate,
                 scheduledTime: scheduledTime,
                 primaryColor: primaryColor,
@@ -115,7 +113,7 @@ export class EditTaskPage {
                 taskDoc.update(this.task);
             }
             else {
-                this.tasksCollection.add(this.newTask);
+                this.tasksCollection.add(this.task);
             }
             this.navCtrl.pop();
         }

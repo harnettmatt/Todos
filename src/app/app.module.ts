@@ -6,7 +6,6 @@ import { MyApp } from './app.component';
 import { CalendarPage } from '../pages/calendar/calendar';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TasksPage } from '../pages/tasks/tasks';
-import { NewTaskPage } from '../pages/new-task/new-task';
 import { EditTaskPage } from '../pages/edit-task/edit-task';
 import { EventsPage } from '../pages/events/events';
 import { EditEventPage } from '../pages/edit-event/edit-event';
@@ -38,7 +37,6 @@ const firebaseConfig = {
     CalendarPage,
     TabsPage,
     TasksPage,
-    NewTaskPage,
     EditTaskPage,
     EventsPage,
     EditEventPage,
@@ -58,7 +56,6 @@ const firebaseConfig = {
     CalendarPage,
     TabsPage,
     TasksPage,
-    NewTaskPage,
     EditTaskPage,
     EventsPage,
     EditEventPage,
