@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import { EditEventPage } from '../edit-event/edit-event';
 import { NewEventPage } from '../new-event/new-event'
+import { FirestoreProvider } from '../../providers/firestore/firestore';
 
 export interface Event {
     id?:            string;
@@ -34,7 +35,7 @@ export class EventsPage {
     sortedCustomEvents: Event[];
     customEventsSubscription: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore, private firestoreProvider: FirestoreProvider) {
     }
 
     ngOnInit() {
@@ -47,14 +48,7 @@ export class EventsPage {
 
     fetchCommonEvents() {
         this.commonEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', true));
-        this.commonEventsSnapshot = this.commonEventsCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const event = a.payload.doc.data() as Event;
-                const id = a.payload.doc.id;
-                event.id = id;
-                return event;
-            });
-        });
+        this.commonEventsSnapshot = firestoreProvider.getEventSnapshotChanges(this.commonEventsCollection);
         let commonEventsPromise = new Promise((resolve, reject) => {
             this.commonEventsSubscription = this.commonEventsSnapshot.subscribe(events => {
                 events.sort(function (a, b) { return a.from - b.from });
@@ -67,14 +61,7 @@ export class EventsPage {
 
     fetchCustomEvents() {
         this.customEventsCollection = this.afs.collection('events', ref => ref.where('common', '==', false));
-        this.customEventsSnapshot = this.customEventsCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const event = a.payload.doc.data() as Event;
-                const id = a.payload.doc.id;
-                event.id = id;
-                return event;
-            });
-        });
+        this.customEventsSnapshot = firestoreProvider.getEventSnapshotChanges(this.customEventsCollection);
         let customEventsPromise = new Promise((resolve, reject) => {
             this.customEventsSubscription = this.customEventsSnapshot.subscribe(events => {
                 events.sort(function (a, b) { return a.from - b.from });
