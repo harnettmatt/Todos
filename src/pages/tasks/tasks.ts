@@ -50,7 +50,7 @@ export class TasksPage {
     }
 
     addTask() {
-        this.navCtrl.push(NewTaskPage);
+        this.navCtrl.push(EditTaskPage);
     }
 
     editTask(task) {

@@ -1,11 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Edit Task</ion-title>
+    <ion-title>{{ headerText }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <form [formGroup]="editTaskForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="taskForm" (ngSubmit)="submitForm()">
         <ion-item>
             <ion-label>Task Name: </ion-label>
             <ion-input type="text" formControlName="name"></ion-input>
@@ -36,8 +36,10 @@
         </ion-item>
         <ion-grid>
             <ion-row>
-                <ion-col><button ion-button type="submit" block color="secondary">Update Task</button></ion-col>
-                <ion-col><button ion-button type="button" block color="danger" (click)="deleteTask()">Delete Task</button></ion-col>
+                <ion-col><button ion-button type="submit" block color="secondary">{{ submitButtonText }}</button></ion-col>
+                <ion-col *ngIf='editTask'>
+                    <button ion-button type="button" block color="danger" (click)="deleteTask()">Delete Task</button>
+                </ion-col>
             </ion-row>
         </ion-grid>
     </form>
