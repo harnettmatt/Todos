@@ -89,7 +89,7 @@ export class CalendarPage {
     buildEvents() {
         let dayList = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         let whereClause = 'days.' + dayList[this.date.getDay()];
-        this.eventsCollection = this.afs.collection('events', ref => ref.where(whereClause, '==', true));
+        this.eventsCollection = this.afs.collection('events', ref => ref.where(whereClause, '==', true).where('disable', '==', false));
         this.eventsSnapshot = this.eventsCollection.snapshotChanges().map(actions => {
             return actions.map(a => {
                 let event = a.payload.doc.data() as Event;
