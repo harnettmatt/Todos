@@ -61,20 +61,20 @@ export class CalendarPage {
     buildCalendar() {
         this.calendar = [];
         for (let x=0; x<96; x++) {
-            let label = '';
+            let timeLabel = null;
             let cssClass = 'unscheduled';
             let incrementBorderColor = 'white';
             let totalMins = x*15;
             let time = this.minsToMilitary(totalMins);
             if (totalMins % 60 == 0 && time != 0) {
-                label = this.minsToString(totalMins);
+                timeLabel = time;
             }
             if (totalMins % 60 == 45) {
                 incrementBorderColor = 'black';
                 cssClass = 'unscheduled-time';
             }
             let increment = {
-                'timeLabel': label,
+                'timeLabel': timeLabel,
                 'label': '',
                 'time': time,
                 'cssClass': cssClass,
@@ -152,22 +152,6 @@ export class CalendarPage {
         promise.then(() => {
             this.tasksSubscription.unsubscribe();
         });
-    }
-
-    clearCalendarTasks() {
-        for (let increment of this.calendar) {
-            if (increment.task) {
-                if (increment.time % 60 == 45) {
-                    increment.cssClass = 'unscheduled-time';
-                }
-                else {
-                    increment.cssClass = 'unscheduled';
-                }
-                increment.label = '';
-                increment.task = null;
-
-            }
-        }
     }
 
     hardTaskSchedule() {
@@ -257,26 +241,6 @@ export class CalendarPage {
                 taskDoc.update(task);
             }
         });
-    }
-
-    minsToString(totalMins: number): string {
-        let mins = totalMins % 60;
-        let hours = Math.floor(totalMins / 60);
-        let abrv = 'am';
-        if (hours >= 12) {
-            abrv = 'pm';
-            hours = hours % 12;
-        }
-        if (hours == 0) {
-            hours = 12;
-        }
-
-        if (mins == 0) {
-            return String(hours) + ":" + String(mins) + "0" + abrv;
-        }
-        else {
-            return String(hours) + ":" + String(mins) + abrv;
-        }
     }
 
     addTaskToCalendar(task: Task) {
