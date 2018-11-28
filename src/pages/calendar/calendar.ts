@@ -73,15 +73,15 @@ export class CalendarPage {
                 incrementBorderColor = 'black';
                 cssClass = 'unscheduled-time';
             }
-            let increment = {
-                'timeLabel': timeLabel,
-                'label': '',
-                'time': time,
-                'cssClass': cssClass,
-                'labelColor': 'green',
-                'incrementColor': 'white',
-                'incrementBorderColor': incrementBorderColor,
-                'type': 'Personal'
+            let increment: CalendarIncrement = {
+                timeLabel: timeLabel,
+                label: '',
+                time: time,
+                cssClass: cssClass,
+                labelColor: 'green',
+                incrementColor: 'white',
+                incrementBorderColor: incrementBorderColor,
+                type: 'Personal'
             }
             this.calendar.push(increment);
         }
