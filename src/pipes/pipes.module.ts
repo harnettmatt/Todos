@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { MilitaryToAmPmPipe } from './military-to-am-pm/military-to-am-pm';
-import { MinutesToAmPmPipe } from './minutes-to-am-pm/minutes-to-am-pm';
 @NgModule({
-	declarations: [MilitaryToAmPmPipe,
-    MinutesToAmPmPipe],
+	declarations: [MilitaryToAmPmPipe],
 	imports: [],
-	exports: [MilitaryToAmPmPipe,
-    MinutesToAmPmPipe]
+	exports: [MilitaryToAmPmPipe]
 })
 export class PipesModule {}
