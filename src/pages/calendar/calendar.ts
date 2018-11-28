@@ -6,6 +6,7 @@ import { Event } from '../events/events';
 import { Task } from '../tasks/tasks';
 import { EditTaskPage } from '../edit-task/edit-task';
 import { EditEventPage } from '../edit-event/edit-event';
+import { FirestoreProvider } from '../../providers/firestore/firestore'
 
 interface CalendarIncrement {
     timeLabel:      string;
@@ -37,7 +38,7 @@ export class CalendarPage {
     tasksSubscription: any;
     unscheduledTasksSubscription: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore, private firestoreProvider: FirestoreProvider) {
         if (this.navParams.get('date')) {
             this.date = this.navParams.get('date');
         }
@@ -90,14 +91,7 @@ export class CalendarPage {
         let dayList = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         let whereClause = 'days.' + dayList[this.date.getDay()];
         this.eventsCollection = this.afs.collection('events', ref => ref.where(whereClause, '==', true).where('disable', '==', false));
-        this.eventsSnapshot = this.eventsCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                let event = a.payload.doc.data() as Event;
-                const id = a.payload.doc.id;
-                event.id = id
-                return event;
-            });
-        });
+        this.eventsSnapshot = this.firestoreProvider.getEventSnapshotChanges(this.eventsCollection);
         let promise = new Promise((resolve, reject) => {
             this.eventsSubscription = this.eventsSnapshot.subscribe(events => {
                 events.forEach(event => {
@@ -145,14 +139,7 @@ export class CalendarPage {
 
     buildTasks() {
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
-        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                let task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id
-                return task;
-            });
-        });
+        this.tasksSnapshot = this.firestoreProvider.getTaskSnapshotChanges(this.tasksCollection);
         let promise = new Promise((resolve, reject) => {
             this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
                 tasks.forEach(task => {
@@ -188,14 +175,7 @@ export class CalendarPage {
         this.buildEvents();
         // this block below is unscheduling the tasks for today
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('scheduledDate', '==', this.date));
-        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                let task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id
-                return task;
-            });
-        });
+        this.tasksSnapshot = this.firestoreProvider.getTaskSnapshotChanges(this.tasksCollection);
         let updateTasks = [];
         let promise = new Promise((resolve, reject) => {
             this.tasksSubscription = this.tasksSnapshot.subscribe(tasks => {
@@ -224,14 +204,7 @@ export class CalendarPage {
 
     scheduleTasks() {
         this.tasksCollection = this.afs.collection('tasks', ref => ref.where('completed', '==', false));
-        this.tasksSnapshot = this.tasksCollection.snapshotChanges().map(actions => {
-            return actions.map(a => {
-                let task = a.payload.doc.data() as Task;
-                const id = a.payload.doc.id;
-                task.id = id
-                return task;
-            });
-        });
+        this.tasksSnapshot = this.firestoreProvider.getTaskSnapshotChanges(this.tasksCollection);
         let updateTasks = [];
         let promise = new Promise((resolve, reject) => {
             this.unscheduledTasksSubscription = this.tasksSnapshot.subscribe(tasks => {
