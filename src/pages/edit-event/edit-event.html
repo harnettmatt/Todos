@@ -11,51 +11,53 @@
     <form [formGroup]="editEventForm" (ngSubmit)="submitForm()">
         <ion-item>
             <ion-label>Event Name: </ion-label>
-            <ion-input type="text" formControlName="name"></ion-input>
+            <ion-input type="text" formControlName="name" [disabled]='editEvent.disable'></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>From: </ion-label>
-            <ion-input type="text" formControlName="from"></ion-input>
+            <ion-input type="text" formControlName="from" [disabled]='editEvent.disable'></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>To: </ion-label>
-            <ion-input type="text" formControlName="to"></ion-input>
+            <ion-input type="text" formControlName="to" [disabled]='editEvent.disable'></ion-input>
         </ion-item>
         <ion-item>
             <ion-label class='checkboxes-label'> Days: </ion-label>
         </ion-item>
         <ion-item>
             <ion-label> Sunday </ion-label>
-            <ion-checkbox item-left formControlName='sunday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='sunday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Monday </ion-label>
-            <ion-checkbox item-left formControlName='monday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='monday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Tuesday </ion-label>
-            <ion-checkbox item-left formControlName='tuesday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='tuesday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Wednesday </ion-label>
-            <ion-checkbox item-left formControlName='wednesday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='wednesday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Thursday </ion-label>
-            <ion-checkbox item-left formControlName='thursday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='thursday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Friday </ion-label>
-            <ion-checkbox item-left formControlName='friday' class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='friday' class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-item>
             <ion-label> Saturday </ion-label>
-            <ion-checkbox item-left formControlName='saturday' [checked]='false'class='checkbox'></ion-checkbox>
+            <ion-checkbox item-left formControlName='saturday' [checked]='false'class='checkbox' [disabled]='editEvent.disable'></ion-checkbox>
         </ion-item>
         <ion-grid>
             <ion-row>
-                <ion-col><button ion-button type="submit" block color="secondary" id="update-button">Update Event</button></ion-col>
-                <ion-col><button ion-button type="button" block color="danger" id="disable-button" (click)="disableEvent()"> {{ disableButtonText }}</button></ion-col>
+                <ion-col><button ion-button type="submit" block color="secondary" id="update-button"> {{ submitButtonText }} </button></ion-col>
+                <ion-col *ngIf='editEvent.disable==false'>
+                    <button ion-button type="button" block color="danger" id="disable-button" (click)="disableEvent()"> {{ disableButtonText }}</button>
+                </ion-col>
             </ion-row>
         </ion-grid>
     </form>
