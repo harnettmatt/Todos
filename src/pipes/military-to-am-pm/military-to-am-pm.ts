@@ -7,7 +7,6 @@ export class MilitaryToAmPmPipe implements PipeTransform {
     transform(value: number, ...args) {
         let ampm = "am";
         let militaryString = value.toString();
-        let timeLength = militaryString.length;
         if (value > 1200) {
             value = value - 1200;
             militaryString = value.toString();
