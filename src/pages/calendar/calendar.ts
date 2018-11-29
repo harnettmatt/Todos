@@ -32,7 +32,6 @@ export class CalendarPage {
     date: any;
     eventsCollection: AngularFirestoreCollection<Event>;
     eventsSnapshot: Observable<Event[]>;
-    eventsSubscription: any;
     tasksCollection: AngularFirestoreCollection<Task>;
     tasksSnapshot: Observable<Task[]>;
     tasksSubscription: any;
