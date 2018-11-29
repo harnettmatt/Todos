@@ -37,8 +37,10 @@ export class CalendarPage {
     tasksSnapshot: Observable<Task[]>;
     tasksSubscription: any;
     unscheduledTasksSubscription: any;
+    dayList: string[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private afs: AngularFirestore, private firestoreProvider: FirestoreProvider) {
+        // determining the date of the calendar
         if (this.navParams.get('date')) {
             this.date = this.navParams.get('date');
         }
@@ -47,19 +49,16 @@ export class CalendarPage {
         }
         this.date.setHours(0,0,0,0);
 
-        let time = 1230;
-        let hours = Number(time.toString().slice(0,2));
-        let mins = Number(time.toString().slice(2,4));
-        let totalMins = (hours * 60) + mins;
-        let incrementIndex = totalMins/15;
-
+        // creating the calendar, adding events and tasks to the calendar
         this.buildCalendar();
         this.buildEvents();
         this.buildTasks();
     }
 
+    // setting up the initial structure and formatting of the calendar
     buildCalendar() {
         this.calendar = [];
+        // looping through the 96 increments of 15 minutes that there are in a day
         for (let x=0; x<96; x++) {
             let timeLabel = null;
             let cssClass = 'unscheduled';
@@ -87,11 +86,13 @@ export class CalendarPage {
         }
     }
 
+    // adding events to the calendar
     buildEvents() {
-        let dayList = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-        let whereClause = 'days.' + dayList[this.date.getDay()];
+        // getting events for the day
+        let whereClause = 'days.' + this.dayList[this.date.getDay()];
         this.eventsCollection = this.afs.collection('events', ref => ref.where(whereClause, '==', true).where('disable', '==', false));
         this.eventsSnapshot = this.firestoreProvider.getEventSnapshotChanges(this.eventsCollection);
+        // assigning event to increments and setting the relevant increment settings
         let promise = new Promise((resolve, reject) => {
             this.eventsSubscription = this.eventsSnapshot.subscribe(events => {
                 events.forEach(event => {
@@ -102,39 +103,34 @@ export class CalendarPage {
                             increment.type = event.name;
                             increment.event = event;
                         }
-                        else {
-                            // begining of the interval
-                            if (event.from == increment.time) {
-                                increment.label = event.name;
-                                this.setIncrementEvent(increment, event, 'top-increment-scheduled');
-                            }
-                            // end of the interval
-                            else if (event.to == increment.time) {
-                                let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
-                                this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
-                            }
-                            // middle increment for sleep (this is a one-off because the interval goes between days)
-                            else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time > 0) || (2400 >= increment.time && increment.time >= event.from))) {
-                                this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
-                            }
-                            // case where sleep overlaps onto the 'next day'
-                            else if (event.name == 'Sleep' && increment.time == 0) {
-                                increment.label = event.name;
-                                this.setIncrementEvent(increment, event, 'top-increment-scheduled')
-                            }
-                            // middle increment
-                            else if (event.name != 'Sleep' && event.to > increment.time && increment.time >= event.from) {
-                                this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
-                            }
+                        // begining of the interval
+                        else if (event.from == increment.time){
+                            increment.label = event.name;
+                            this.setIncrementEvent(increment, event, 'top-increment-scheduled');
+                        }
+                        // end of the interval
+                        else if (event.to == increment.time) {
+                            let previousIncrementIndex = this.calendar.indexOf(increment) - 1;
+                            this.setIncrementEvent(this.calendar[previousIncrementIndex], event, 'bottom-increment-scheduled');
+                        }
+                        // middle increment for sleep (this is a one-off because the interval goes between days)
+                        else if (event.name == 'Sleep' && ((event.to > increment.time && increment.time > 0) || (2400 >= increment.time && increment.time >= event.from))) {
+                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
+                        }
+                        // case where sleep overlaps onto the 'next day'
+                        else if (event.name == 'Sleep' && increment.time == 0) {
+                            increment.label = event.name;
+                            this.setIncrementEvent(increment, event, 'top-increment-scheduled')
+                        }
+                        // middle increment
+                        else if (event.name != 'Sleep' && event.to > increment.time && increment.time >= event.from) {
+                            this.setIncrementEvent(increment, event, 'middle-increment-scheduled');
                         }
                     }
                 });
                 resolve();
             });
         });
-        promise.then(() => {
-            this.eventsSubscription.unsubscribe();
-        })
     }
 
     buildTasks() {
